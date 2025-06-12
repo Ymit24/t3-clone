@@ -4,6 +4,7 @@ class ChatThreadsController < ApplicationController
     layout 'chat', only: [:index, :show, :new, :edit]
 
     def index
+        redirect_to new_chat_thread_path
     end
 
     def show
