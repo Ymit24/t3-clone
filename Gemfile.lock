@@ -150,6 +150,8 @@ GEM
     guard-minitest (2.4.6)
       guard-compat (~> 1.2)
       minitest (>= 3.0)
+    heroicon (1.0.0)
+      rails (>= 5.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.1.0)
@@ -449,6 +451,7 @@ DEPENDENCIES
   devise
   guard
   guard-minitest
+  heroicon
   importmap-rails
   jbuilder
   kamal

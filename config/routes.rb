@@ -11,12 +11,9 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "chat_threads#new"
+  root "home#index"
 
-  resources :chat_threads
-
-  get "/console", to: 'console#index'
-  get "hello", to: "hello#index"
+  get "/console", to: "console#index"
 
   # Add a protected route that requires authentication
   mount MissionControl::Jobs::Engine, at: "/jobs"
