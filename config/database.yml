@@ -19,37 +19,27 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-
 development:
-  <<: *default
-  database: t3_clone_development
+  primary: &primary_development # Define primary development connection
+    <<: *default
+    database: t3_clone_development
+    username: t3_clone # Or your local PostgreSQL username
+    # password: # Uncomment and set if your local user requires a password
 
-  # The specified database role being used to connect to PostgreSQL.
-  # To create additional roles in PostgreSQL see `$ createuser --help`.
-  # When left blank, PostgreSQL will use the default role. This is
-  # the same name as the operating system user running Rails.
-  #username: t3_clone
+  cache: # Separate database for cache in development
+    <<: *primary_development
+    database: t3_clone_development_cache
+    migrations_paths: db/cache_migrate
 
-  # The password associated with the PostgreSQL role (username).
-  #password:
+  queue: # Separate database for queue in development
+    <<: *primary_development
+    database: t3_clone_development_queue
+    migrations_paths: db/queue_migrate
 
-  # Connect on a TCP socket. Omitted by default since the client uses a
-  # domain socket that doesn't need configuration. Windows does not have
-  # domain sockets, so uncomment these lines.
-  #host: localhost
-
-  # The TCP port the server listens on. Defaults to 5432.
-  # If your server runs on a different port number, change accordingly.
-  #port: 5432
-
-  # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
-
-  # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1,
-  #   log, notice, warning, error, fatal, and panic
-  # Defaults to warning.
-  #min_messages: notice
+  cable: # Separate database for cable in development
+    <<: *primary_development
+    database: t3_clone_development_cable
+    migrations_paths: db/cable_migrate
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -57,42 +47,49 @@ development:
 test:
   <<: *default
   database: t3_clone_test
+  # username: t3_clone # Uncomment if your test environment uses a specific user
 
-# As with config/credentials.yml, you never want to store sensitive information,
-# like your database password, in your source code. If your source code is
-# ever seen by anyone, they now have access to your database.
-#
-# Instead, provide the password or a full connection URL as an environment
-# variable when you boot the app. For example:
-#
-#   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
-#
-# If the connection URL is provided in the special DATABASE_URL environment
-# variable, Rails will automatically merge its configuration values on top of
-# the values provided in this file. Alternatively, you can specify a connection
-# URL environment variable explicitly:
-#
-#   production:
-#     url: <%= ENV["MY_APP_DATABASE_URL"] %>
-#
-# Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
-# for a full overview on how database connection configuration can be specified.
-#
 production:
+  # The primary database connection for your main app, using Render's DATABASE_URL
   primary: &primary_production
     <<: *default
-    database: t3_clone_production
-    username: t3_clone
-    password: <%= ENV["T3_CLONE_DATABASE_PASSWORD"] %>
+    url: <%= ENV['DATABASE_URL'] %>
+
+  <%
+    # Safely parse DATABASE_URL components for auxiliary connections
+    # This block ensures URI.parse is only called if ENV['DATABASE_URL'] is present,
+    # preventing errors in development where it's typically nil.
+    db_uri_parsed = ENV['DATABASE_URL'].present? ? URI.parse(ENV['DATABASE_URL']) : nil
+    production_host = db_uri_parsed&.host
+    production_port = db_uri_parsed&.port
+    production_username = db_uri_parsed&.user
+    production_password = db_uri_parsed&.password
+    production_base_db_name = db_uri_parsed&.path&.split('/')&.last
+  %>
+
   cache:
-    <<: *primary_production
-    database: t3_clone_production_cache
+    <<: *default # Inherit basic adapter/encoding/pool
+    host: <%= production_host %>
+    port: <%= production_port %>
+    username: <%= production_username %>
+    password: <%= production_password %>
+    database: <%= "#{production_base_db_name}_cache" if production_base_db_name.present? %>
     migrations_paths: db/cache_migrate
+
   queue:
-    <<: *primary_production
-    database: t3_clone_production_queue
+    <<: *default # Inherit basic adapter/encoding/pool
+    host: <%= production_host %>
+    port: <%= production_port %>
+    username: <%= production_username %>
+    password: <%= production_password %>
+    database: <%= "#{production_base_db_name}_queue" if production_base_db_name.present? %>
     migrations_paths: db/queue_migrate
+
   cable:
-    <<: *primary_production
-    database: t3_clone_production_cable
+    <<: *default # Inherit basic adapter/encoding/pool
+    host: <%= production_host %>
+    port: <%= production_port %>
+    username: <%= production_username %>
+    password: <%= production_password %>
+    database: <%= "#{production_base_db_name}_cable" if production_base_db_name.present? %>
     migrations_paths: db/cable_migrate
