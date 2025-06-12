@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :chat_threads
 
   get "/console", to: 'console#index'
+  get "hello", to: "hello#index"
 
   # Add a protected route that requires authentication
   mount MissionControl::Jobs::Engine, at: "/jobs"

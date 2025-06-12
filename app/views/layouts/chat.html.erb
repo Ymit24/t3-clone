@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
   <head>
     <title>T3Clone</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body class="bg-gray-100">
     <div class="min-h-screen flex">
       <!-- Left Navigation -->
@@ -28,7 +26,6 @@
           <%= render partial: "chat_threads/thread_list", collection: @chat_threads, as: :chat_thread %>
         </div>
       </div>
-
       <!-- Main Content -->
       <div class="flex-1 p-8">
         <%= turbo_frame_tag "chat_content" do %>
@@ -37,4 +34,5 @@
       </div>
     </div>
   </body>
-</html> 
+</html>
+
