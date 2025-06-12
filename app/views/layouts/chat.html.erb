@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>T3Clone</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-100">
+    <div class="min-h-screen flex">
+      <!-- Left Navigation -->
+      <div class="w-64 bg-white shadow-lg">
+        <div class="p-4">
+          <h1 class="text-xl font-bold text-gray-800 mb-4">Chat Threads</h1>
+          <%= link_to new_chat_thread_path, class: "w-full flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500", data: { turbo_frame: "chat_content" } do %>
+            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            New Thread
+          <% end %>
+        </div>
+        <div id="chat_threads" class="overflow-y-auto">
+          <%= render partial: "chat_threads/thread_list", collection: @chat_threads, as: :chat_thread %>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex-1 p-8">
+        <%= turbo_frame_tag "chat_content" do %>
+          <%= yield %>
+        <% end %>
+      </div>
+    </div>
+  </body>
+</html> 
