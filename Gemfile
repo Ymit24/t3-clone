@@ -44,9 +44,6 @@ gem "thruster", require: false
 # Tailwind CSS for styling
 gem "tailwindcss-rails"
 
-# Authentication
-gem "devise"
-
 gem "heroicon"
 gem "view_component"
 
