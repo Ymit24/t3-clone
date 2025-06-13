@@ -29,6 +29,15 @@
         <span class="block sm:inline"><%= alert %></span>
       </div>
     <% end %>
+    <nav class="h-16 bg-neutral-200 dark:bg-gray-700 text-white flex justify-between px-12 py-2 items-center">
+      <% if Current.user %>
+        <%= Current.user.email_address %>
+        <%= button_to "Logout", session_path, method: :delete %>
+      <% else %>
+        <div></div>
+        <%= button_to "Login", new_session_path %>
+      <% end %>
+    </nav>
     <main>
       <%= yield %>
     </main>
