@@ -9,7 +9,10 @@ class MessagesController < ApplicationController
         @message = Current.user.messages.new(message_params)
         if @message.save
             OpenrouterChatCompletionJob.perform_later(Current.user, @message.llm_model)
-            redirect_to messages_path
+            @message = Message.new
+            respond_to do |format|
+              format.turbo_stream
+            end
         else
             render :index, status: :unprocessable_entity
         end

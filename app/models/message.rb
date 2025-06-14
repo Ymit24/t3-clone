@@ -19,4 +19,8 @@ class Message < ApplicationRecord
 
   validates :value, presence: true
   validates :llm_model, presence: true
+
+  scope :ordered, -> { order(created_at: :asc) }
+
+  broadcasts_to ->(message) { message.user }
 end

@@ -1,0 +1,3 @@
+<%= form_with(model: @message, id: dom_id(@message),  local: false) do |form| %>
+  <%= render LlmPromptComponent.new(form:, errors: @message.errors) %>
+<% end %>

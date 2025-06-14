@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "messages#index"
 
-  resources :messages, only: %i[index create]
+  resources :messages, only: %i[new index show create]
 
   if Rails.env.development?
     mount Lookbook::Engine, at: "/lookbook"

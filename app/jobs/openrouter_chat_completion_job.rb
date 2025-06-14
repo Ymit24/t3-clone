@@ -36,5 +36,7 @@ class OpenrouterChatCompletionJob < ApplicationJob
     else
       raise "OpenRouter API error: #{res.code}"
     end
+  rescue => e
+    puts "error occurred: #{e.message}"
   end
 end 

@@ -1,6 +1,7 @@
-<div class="absolute bottom-12 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl flex flex-col gap-12">
-  <div class="flex flex-col justify-start gap-4">
-    <%= render partial: "messages/message", collection: @messages.select(&:persisted?) %>
-    <%= render LlmPromptComponent.new(message: @message) %>
-  </div>
+<%= turbo_stream_from Current.user %>
+<div id="messages" class="flex flex-col gap-4 p-8 my-4 w-full">
+  <%= render partial: "messages/message", collection: @messages.ordered.select(&:persisted?) %>
 </div>
+<% content_for :prompt_region do %>
+  <%= render partial: "messages/form", locals: { message: @message } %>
+<% end %>
