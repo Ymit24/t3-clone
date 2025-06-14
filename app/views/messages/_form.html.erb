@@ -1,3 +1,45 @@
 <%= form_with(model: @message, id: dom_id(@message),  local: false) do |form| %>
-  <%= render LlmPromptComponent.new(form:, errors: @message.errors) %>
+  <div class="relative bg-gray-800 rounded-lg border border-gray-600">
+    <% if @message.errors.any? %>
+      <div class="px-4 py-2 bg-red-900/50 border-b border-red-800">
+        <ul class="text-sm text-red-300">
+          <% @message.errors.full_messages.each do |error| %>
+            <li><%= error %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="px-4 py-3">
+      <%= form.text_area :value,
+              autocomplete: "off",
+              placeholder: "Type your message here...", 
+              rows: 4,
+              class: "w-full resize-none bg-transparent text-gray-300 placeholder-gray-500 border-0 resize-none focus:ring-0 focus:outline-none text-base" %>
+    </div>
+    <div class="flex items-center justify-between px-4 py-3 border-t border-gray-600">
+      <div class="flex items-center space-x-3">
+        <div class="relative">
+          <%= form.select :llm_model_id, 
+                  options_from_collection_for_select(LlmModel.all, :id, :name),
+                  {},
+                  { 
+                    class: "bg-transparent text-gray-300 text-sm border-0 focus:ring-0 focus:outline-none appearance-none pr-8 cursor-pointer",
+                    data: { dropdown_toggle: "model-dropdown" }
+                  } %>
+          <svg class="w-4 h-4 text-gray-400 absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none" 
+                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+      <button type="submit" 
+                class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                data: { disable_with: "..." }>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
 <% end %>
