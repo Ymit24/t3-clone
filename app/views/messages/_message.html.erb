@@ -1,0 +1,7 @@
+<%# locals: (message:) %>
+
+<% if message.is_system %>
+    <%= render SystemChatMessageComponent.new(msg: message.value, llm_model: message.llm_model) %>
+<% else %>
+    <%= render UserChatMessageComponent.new(msg: message.value, llm_model: message.llm_model) %>
+<% end %>

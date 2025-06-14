@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "home#index"
+  root "messages#index"
+
+  resources :messages, only: %i[index create]
 
   if Rails.env.development?
     mount Lookbook::Engine, at: "/lookbook"

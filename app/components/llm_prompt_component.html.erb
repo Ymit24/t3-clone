@@ -1,8 +1,7 @@
-<%= form_with(url: root_path, local: false) do |form| %>
+<%= form_with(model: @message, local: false) do |form| %>
   <div class="relative bg-gray-800 rounded-lg border border-gray-600">
     <div class="px-4 py-3">
-      <%= form.text_area :content,
-            value: @prompt,
+      <%= form.text_area :value,
             autocomplete: "off",
             placeholder: "Type your message here...", 
             rows: 4,
@@ -11,12 +10,8 @@
     <div class="flex items-center justify-between px-4 py-3 border-t border-gray-600">
       <div class="flex items-center space-x-3">
         <div class="relative">
-          <%= form.select :model, 
-                options_for_select([
-                  ["Gemini 2.5 Flash", "gemini-2.5-flash"],
-                  ["GPT-4", "gpt-4"],
-                  ["Claude 3", "claude-3"]
-                ], "gemini-2.5-flash"),
+          <%= form.select :llm_model_id, 
+                options_from_collection_for_select(LlmModel.all, :id, :name),
                 {},
                 { 
                   class: "bg-transparent text-gray-300 text-sm border-0 focus:ring-0 focus:outline-none appearance-none pr-8 cursor-pointer",

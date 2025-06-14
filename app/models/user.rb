@@ -20,4 +20,6 @@ class User < ApplicationRecord
   validates :email_address, presence: true, uniqueness: true
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+
+  has_many :messages, dependent: :destroy
 end
