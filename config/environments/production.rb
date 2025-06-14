@@ -92,7 +92,4 @@ Rails.application.configure do
 
   # NOTE: disable auth for mission control in prod
   config.mission_control.jobs.http_basic_auth_enabled = false
-
-  # TODO: DANGER: remove this
-  config.web_console.development_only = false
 end

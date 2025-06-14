@@ -16,8 +16,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  get "/console", to: "console#index"
-
+  if Rails.env.development?
+    mount Lookbook::Engine, at: "/lookbook"
+  end
   # Add a protected route that requires authentication
   mount MissionControl::Jobs::Engine, at: "/jobs"
 end

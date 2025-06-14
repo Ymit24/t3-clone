@@ -87,4 +87,7 @@ Rails.application.configure do
 
   # NOTE: disable auth for mission control in dev
   config.mission_control.jobs.http_basic_auth_enabled = false
+
+  config.view_component.default_preview_layout = "component_preview"
+  config.lookbook.preview_layout = "component_preview"
 end

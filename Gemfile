@@ -52,6 +52,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
   gem "annotate"
+  gem "lookbook"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -69,10 +70,11 @@ end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "listen"
+  gem "actioncable"
+  gem "web-console"
 end
 
-# NOTE: danger!
-gem "web-console"
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
