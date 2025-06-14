@@ -5,7 +5,6 @@ class OpenrouterChatCompletionJob < ApplicationJob
   queue_as :default
 
   def perform(chat, llm_model)
-    puts "\n\n\n\n------------------------"
     api_key = ENV["OPENROUTER_API_KEY"] or raise "OPENROUTER_API_KEY is not set"
 
     uri = URI("https://openrouter.ai/api/v1/chat/completions")
@@ -32,16 +31,11 @@ class OpenrouterChatCompletionJob < ApplicationJob
         llm_model: llm_model,
         is_system: true,
       )
-
-      puts "returned message: #{assistant_message}"
-    puts "++++++++++++++++++++++++\n\n\n\n"
     else
-    puts "++++++++++++++++++++++++\n\n\n\n"
       raise "OpenRouter API error: #{res.code}"
     end
   rescue => e
     puts "error occurred: #{e.message}"
-    puts "++++++++++++++++++++++++\n\n\n\n"
   end
 end
 
