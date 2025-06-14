@@ -8,3 +8,5 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+LlmModel.destroy_all
+LlmModel.create!(name: "Gemma", provider: "openrouter", model: "google/gemma-3n-e4b-it:free")
