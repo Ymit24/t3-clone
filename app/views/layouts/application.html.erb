@@ -30,16 +30,23 @@
       </div>
     <% end %>
     <main class="text-black dark:text-white flex flex-row items-center max-h-screen" data-controller="scroll">
-      <div data-controller="sidebar">
-        <button data-sidebar-target="toggleButton" data-action="click->sidebar#toggle" 
-          class="fixed top-4 left-4 z-50 p-2 bg-gray-700 text-white rounded shadow"
-          data-sidebar-target="toggleButton">
+      <div data-controller="toggle">
+        <button data-toggle-target="toggleable" data-action="click->toggle#toggle" 
+          class="data-[toggled=false]:hidden fixed top-20 left-4 z-50 p-2 bg-gray-700 text-white rounded shadow"
+          data-toggle-target="toggleButton">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
         </button>
-        <nav data-sidebar-target="sidebar" class="w-64 h-screen bg-gray-100 dark:bg-gray-800 transition-transform data-[collapsed=true]:hidden" data-collapsed="true">
-          <div class="flex items-center justify-end px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+        <nav data-toggle-target="toggleable" class="w-64 h-screen bg-gray-100 dark:bg-gray-800 data-[toggled=true]:w-0 overflow-hidden transition-all duration-300" data-toggled="false">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+            <button data-toggle-target="toggleButton" data-action="click->toggle#toggle" 
+              class="p-2 bg-gray-700 text-white rounded shadow"
+              data-toggle-target="toggleButton">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
             <!-- Circle user icon -->
             <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold">
               <%= Current.user.email_address.split("@").first.first.upcase %>
@@ -48,19 +55,19 @@
           <div class="flex-1 px-4 py-4 overflow-y-auto">
             <ul class="space-y-3">
               <li>
-                <%= link_to "new chat", chats_path, class: "block w-full text-center px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-gray-600 transition" %>
+                <%= link_to "new chat", chats_path, class: "block w-full text-center px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-gray-600" %>
               </li>
               <% Current.user.chats.ordered.limit(10).each do |chat| %>
                 <li>
-                  <%= link_to chat.title.presence || "chat #{chat.id}", chat_path(chat), class: "block w-full text-left px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 transition" %>
+                  <%= link_to chat.title.presence || "chat #{chat.id}", chat_path(chat), class: "block w-full text-left px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600" %>
                 </li>
               <% end %>
             </ul>
           </div>
         </nav>
       </div>
-      <div class="flex flex-1 flex-col items-center max-h-screen">
-        <section class="flex-1 overflow-y-auto w-full" data-scroll-target="container">
+      <div class="flex flex-1 flex-col items-center max-h-screen transition-all duration-300">
+        <section class="flex-1 overflow-y-auto w-full " data-scroll-target="container">
           <%= yield %>
         </section>
         <footer class="w-full">
