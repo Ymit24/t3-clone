@@ -18,5 +18,5 @@ class Message < ApplicationRecord
   belongs_to :llm_model
 
   validates :value, presence: true
-  validates :llm_model_id, presence: true
+  validates :llm_model, presence: true
 end

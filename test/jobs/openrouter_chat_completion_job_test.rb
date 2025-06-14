@@ -32,4 +32,4 @@ class OpenrouterChatCompletionJobTest < ActiveSupport::TestCase
   ensure
     Net::HTTP.singleton_class.send(:remove_method, :request) if Net::HTTP.singleton_class.method_defined?(:request)
   end
-end 
+end
