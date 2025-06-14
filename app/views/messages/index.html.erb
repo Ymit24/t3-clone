@@ -1,7 +1,0 @@
-<%= turbo_stream_from Current.user %>
-<div id="messages" class="flex flex-col gap-4 p-8 my-4 w-full">
-  <%= render partial: "messages/message", collection: @messages.ordered.select(&:persisted?) %>
-</div>
-<% content_for :prompt_region do %>
-  <%= render partial: "messages/form", locals: { message: @message } %>
-<% end %>

@@ -1,9 +1,9 @@
-<%= form_with(model: @message, id: dom_id(@message),  local: false) do |form| %>
+<%= form_for([@chat, @message], id: dom_id(message),  local: false) do |form| %>
   <div class="relative bg-gray-800 rounded-lg border border-gray-600">
-    <% if @message.errors.any? %>
+    <% if message.errors.any? %>
       <div class="px-4 py-2 bg-red-900/50 border-b border-red-800">
         <ul class="text-sm text-red-300">
-          <% @message.errors.full_messages.each do |error| %>
+          <% message.errors.full_messages.each do |error| %>
             <li><%= error %></li>
           <% end %>
         </ul>

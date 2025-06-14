@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_14_057030) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_14_214427) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "chats", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_chats_on_user_id"
+  end
 
   create_table "llm_models", force: :cascade do |t|
     t.string "name", null: false
@@ -23,14 +31,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_057030) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.bigint "user_id", null: false
     t.string "value"
     t.bigint "llm_model_id", null: false
     t.boolean "is_system", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "chat_id", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["llm_model_id"], name: "index_messages_on_llm_model_id"
-    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -192,8 +200,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_057030) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "chats", "users"
+  add_foreign_key "messages", "chats"
   add_foreign_key "messages", "llm_models"
-  add_foreign_key "messages", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
