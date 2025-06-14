@@ -18,7 +18,9 @@
 one:
   user: one
   value: MyString
+  llm_model: one
 
 two:
   user: two
   value: MyString
+  llm_model: one
