@@ -1,7 +1,26 @@
 @import "tailwindcss";
 
-/* @import "flowbite/src/themes/default"; */
 @plugin "flowbite/plugin";
-/* @source "../../../node_modules/flowbite"; */
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root {
+  --sidebar-color: #000000;
+  --chat-area-color: oklch(21% .034 264.665);
+  --chat-message-color: oklch(27.8% .033 256.848);
+  --chat-entry-color: oklch(37.3% .034 259.733);
+}
+
+[data-theme="dark"] {
+  --sidebar-color: oklch(27.8% .033 256.848);
+  --chat-area-color: oklch(21% .034 264.665);
+  --chat-message-color: oklch(27.8% .033 256.848);
+  --chat-entry-color: oklch(37.3% .034 259.733);
+}
+
+@theme inline {
+  --color-sidebar: var(--sidebar-color);
+  --color-chat-area: var(--chat-area-color);
+  --color-chat-message: var(--chat-message-color);
+  --color-chat-entry: var(--chat-entry-color);
+}

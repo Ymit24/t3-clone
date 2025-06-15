@@ -1,0 +1,25 @@
+<div class="block md:hidden fixed top-8 left-8 rounded-full bg-gray-900 border border-gray-300 dark-border-gray-600 p-2 w-12 h-12">
+  <%= link_to chats_path, class:"w-full h-full flex items-center justify-center" do %>
+    <%= heroicon "arrow-uturn-left", options: { class: "w-6 h-6 text-white" } %>
+  <% end %>
+</div>
+<nav class="hidden md:flex w-64 h-screen bg-sidebar overflow-hidden flex-col justify-between h-full px-4 py-4">
+  <%= link_to "New Chat", chats_path, class: "block text-center px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-gray-600" %>
+  <div class="flex-1 py-4 overflow-y-auto">
+    <ul class="space-y-3">
+      <% Current.user.chats.ordered.limit(10).each do |chat| %>
+        <li>
+          <%= link_to chat.title.presence || "chat #{chat.id}", chat_path(chat), class: "block w-full text-left px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="flex items-center gap-4 justify-between">
+    <%= link_to chats_path, class: "flex justify-between items-center w-full p-4 rounded-md" do %>
+      <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold">
+        <%= Current.user.email_address.split("@").first.first.upcase %>
+      </div>
+      <%= Current.user.email_address %>
+    <% end %>
+  </div>
+</nav>
