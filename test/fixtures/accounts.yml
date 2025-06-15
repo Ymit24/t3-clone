@@ -1,0 +1,24 @@
+# == Schema Information
+#
+# Table name: accounts
+#
+#  id             :integer          not null, primary key
+#  user_id        :integer          not null
+#  openrouter_key :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+# Indexes
+#
+#  index_accounts_on_user_id  (user_id)
+#
+
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  openrouter_key: MyString
+
+two:
+  user: two
+  openrouter_key: MyString

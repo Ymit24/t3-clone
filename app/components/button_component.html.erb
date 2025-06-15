@@ -1,15 +1,28 @@
-<%= button_tag type:@type, class: button_classes, data: @data do %>
-  <%# Render icon if present and positioned left %>
-  <% if render_icon? && @icon_position == :left %>
-    <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %> <%# Increased icon size slightly for icon-only buttons %>
+<%# app/components/button_component.html.erb %>
+<% if link? %>
+  <%# Render as a link if @path is provided %>
+  <%= link_to @path, class: button_classes, data: combined_data do %>
+    <% if render_icon? && @icon_position == :left %>
+      <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
+    <% end %>
+    <% if render_text? %>
+      <span><%= @text %></span>
+    <% end %>
+    <% if render_icon? && @icon_position == :right %>
+      <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
+    <% end %>
   <% end %>
-  <%# Render text if present %>
-  <% if render_text? %>
-    <span><%= @text %></span>
-  <% end %>
-  <%# Render icon if present and positioned right %>
-  <% if render_icon? && @icon_position == :right %>
-    <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %> <%# Increased icon size slightly %>
-  <% end %>
+<% else %>
+  <%# Render as a button if @path is not provided %>
+  <button type="<%= @type %>" class="<%= button_classes %>" data="<%= combined_data %>">
+    <% if render_icon? && @icon_position == :left %>
+      <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
+    <% end %>
+    <% if render_text? %>
+      <span><%= @text %></span>
+    <% end %>
+    <% if render_icon? && @icon_position == :right %>
+      <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
+    <% end %>
+  </button>
 <% end %>
-

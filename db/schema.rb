@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_14_214427) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_15_194903) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "accounts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "openrouter_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
 
   create_table "chats", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -200,6 +208,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_214427) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "accounts", "users"
   add_foreign_key "chats", "users"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "llm_models"

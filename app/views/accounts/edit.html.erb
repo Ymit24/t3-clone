@@ -1,0 +1,35 @@
+<div class="bg-chat-area w-screen h-screen md:px-48 md:py-16 space-y-8">
+  <!-- Back to Chats Link -->
+  <div>
+    <%= render LinkComponent.new(text: "← Back to Chats", path: chats_path, classes: "text-primary hover:text-primary/80 text-sm") %>
+  </div>
+  <!-- Account Settings Header -->
+  <h1 class="text-2xl font-bold text-text-primary">Account Settings</h1>
+  <!-- Account Settings Form -->
+  <div class="bg-sidebar p-6 rounded-lg shadow-md space-y-4">
+    <%= form_with(model: @account, class: "space-y-4") do |form| %>
+      <div class="space-y-2">
+        <%= form.label :openrouter_key, "Openrouter Key", class: "block text-sm font-medium text-text-primary" %>
+        <%= form.text_field :openrouter_key, type: :password, class: "w-full p-2 border border-border rounded-md bg-chat-entry text-text-primary placeholder-text-secondary focus:ring-primary focus:border-primary" %>
+      </div>
+      <div>
+        <%= form.submit "Update", class: "bg-primary text-chat-area px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" %>
+      </div>
+    <% end %>
+  </div>
+  <!-- Danger Section -->
+  <div class="space-y-4">
+    <h3 class="text-lg font-semibold text-red-600">Danger Zone</h3>
+    <hr class="border-border">
+    <div class="flex items-center gap-4 bg-sidebar p-6 rounded-lg shadow-md">
+      <%= render ButtonComponent.new(
+        text: "Delete Account",
+        path: account_path(@account),
+        method: :delete,
+        confirm: "Are you sure you want to delete your account? This action cannot be undone.",
+        variant: :danger
+      ) %>
+      <span class="text-sm text-text-secondary">NOTE: This is irreversible!</span>
+    </div>
+  </div>
+</div>
