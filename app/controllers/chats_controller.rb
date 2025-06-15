@@ -10,6 +10,7 @@ class ChatsController < ApplicationController
   end
 
   def show
+    redirect_to root_url unless @chat
   end
 
   def destroy
@@ -21,5 +22,7 @@ class ChatsController < ApplicationController
 
   def set_chat
     @chat = Current.user.chats.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    @chat = nil
   end
 end
