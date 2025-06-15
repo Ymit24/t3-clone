@@ -1,4 +1,4 @@
-<%= form_with(model: [@chat, @message], class: "flex flex-row items-center justify-between gap-4 w-full h-32 transition-all duration-100 ease-in-out p-4 bg-sidebar") do |form| %>
+<%= form_with(model: [@chat, @message], id: dom_id(@message), class: "flex flex-row items-center justify-between gap-4 w-full h-32 transition-all duration-100 ease-in-out p-4 bg-sidebar") do |form| %>
   <%= form.select :llm_model_id,
                   options_from_collection_for_select(LlmModel.all, :id, :name),
                   {},
@@ -10,5 +10,5 @@
               placeholder: "Type your message here...",
               required: true,
               class: "flex-1 rounded-md resize-none border-0 bg-chat-entry p-2 text-base text-text-primary p1laceholder-text-secondary focus:border-primary focus:outline-none focus:ring-0 overflow-y-auto"%>
-  <%= render ButtonComponent.new(icon: "paper-airplane", variant: :primary) %>
+  <%= render ButtonComponent.new(icon: "paper-airplane", type: :submit, variant: :primary) %>
 <% end %>

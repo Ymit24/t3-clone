@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: %i[edit update destroy]
+
   def edit
     redirect_to root_path if @account.user != Current.user
   end

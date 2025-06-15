@@ -18,16 +18,14 @@
       <% end %>
     </ul>
   </div>
-  <div class="flex items-center justify-between gap-4">
-    <%= link_to edit_account_path(Current.user.account), class: "flex w-full items-center justify-between p-4" do %>
-      <div
-        class="flex h-8 w-8 items-center justify-center rounded-full font-bold bg-border text-text-primary"
+  <%= link_to edit_account_path(Current.user.account), class: "flex w-full items-center justify-between gap-4" do %>
+    <div
+        class="flex size-8 aspect-square flex items-center justify-center rounded-full font-bold bg-border text-text-primary"
       >
-        <%= Current.user.email_address.split("@").first.first.upcase %>
-      </div>
-      <span class="text-text-primary">
-        <%= Current.user.email_address %>
-      </span>
-    <% end %>
-  </div>
+      <%= Current.user.email_address.split("@").first.first.upcase %>
+    </div>
+    <div class="flex-1 text-ellipse text-end">
+      <%= Current.user.email_address %>
+    </div>
+  <% end %>
 </nav>
