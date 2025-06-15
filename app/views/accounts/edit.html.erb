@@ -6,12 +6,19 @@
   <!-- Account Settings Header -->
   <h1 class="text-2xl font-bold text-text-primary">Account Settings</h1>
   <!-- Account Settings Form -->
-  <div class="bg-sidebar p-6 rounded-lg shadow-md space-y-4">
-    <%= form_with(model: @account, class: "space-y-4") do |form| %>
+  <div class="bg-sidebar p-6 rounded-lg shadow-md space-y-6">
+    <%= form_with(model: @account, class: "space-y-6") do |form| %>
+      <!-- Nickname Field -->
+      <div class="space-y-2">
+        <%= form.label :nickname, "Nickname", class: "block text-sm font-medium text-text-primary" %>
+        <%= form.text_field :nickname, placeholder: "Enter your nickname", class: "w-full p-2 border border-border rounded-md bg-chat-entry text-text-primary placeholder-text-secondary focus:ring-primary focus:border-primary" %>
+      </div>
+      <!-- Openrouter Key Field -->
       <div class="space-y-2">
         <%= form.label :openrouter_key, "Openrouter Key", class: "block text-sm font-medium text-text-primary" %>
-        <%= form.text_field :openrouter_key, type: :password, class: "w-full p-2 border border-border rounded-md bg-chat-entry text-text-primary placeholder-text-secondary focus:ring-primary focus:border-primary" %>
+        <%= form.text_field :openrouter_key, type: :password, placeholder: "Enter your Openrouter key", class: "w-full p-2 border border-border rounded-md bg-chat-entry text-text-primary placeholder-text-secondary focus:ring-primary focus:border-primary" %>
       </div>
+      <!-- Submit Button -->
       <div>
         <%= form.submit "Update", class: "bg-primary text-chat-area px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" %>
       </div>

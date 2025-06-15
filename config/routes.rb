@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  resources :chats, only: %i[new index show] do
+  resources :chats, only: %i[new index show destroy] do
     resources :messages, only: %i[create]
   end
 

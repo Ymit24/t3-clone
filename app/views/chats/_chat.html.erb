@@ -1,0 +1,17 @@
+<li id=<%= dom_id(chat) %> class="relative group">
+  <!-- Chat Link -->
+  <%= link_to chat_path(chat), class: "block w-full rounded border bg-chat-area px-4 py-2 text-left border-border hover:bg-sidebar" do %>
+    <%= chat.title.presence || "chat #{chat.id}" %>
+  <% end %>
+  <!-- Edit and Delete Icons -->
+  <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+    <!-- Delete Icon -->
+    <%= render ButtonComponent.new(
+      icon: "trash",
+      path: chat_path(chat),
+      method: :delete,
+      confirm: "Are you sure you want to delete this chat?",
+      variant: :danger
+    ) %>
+  </div>
+</li>

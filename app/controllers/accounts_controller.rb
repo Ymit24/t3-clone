@@ -17,10 +17,10 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    params.require(:account).permit(:openrouter_key).to_h
+    params.require(:account).permit(:openrouter_key, :nickname).to_h
   end
 
   def set_account
-    @account = Account.find(params[:id])
+    @account = Current.user.account
   end
 end
