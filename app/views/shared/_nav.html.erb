@@ -1,25 +1,33 @@
-<div class="block md:hidden fixed top-8 left-8 rounded-full bg-gray-900 border border-gray-300 dark-border-gray-600 p-2 w-12 h-12">
-  <%= link_to chats_path, class:"w-full h-full flex items-center justify-center" do %>
-    <%= heroicon "arrow-uturn-left", options: { class: "w-6 h-6 text-white" } %>
+<div
+  class="fixed top-8 left-8 z-10 block h-12 w-12 rounded-full border p-2 md:hidden bg-primary border-border"
+>
+  <%= link_to chats_path, class: "flex h-full w-full items-center justify-center" do %>
+    <%= heroicon "arrow-uturn-left", options: { class: "h-6 w-6 text-chat-area" } %>
   <% end %>
 </div>
-<nav class="hidden md:flex w-64 h-screen bg-sidebar overflow-hidden flex-col justify-between h-full px-4 py-4">
-  <%= link_to "New Chat", chats_path, class: "block text-center px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-gray-600" %>
-  <div class="flex-1 py-4 overflow-y-auto">
+<nav
+  class="hidden h-screen w-64 flex-col justify-between overflow-hidden px-4 pt-4 pb-1 md:flex bg-sidebar text-text-primary"
+>
+  <%= link_to "New Chat", chats_path, class: "block rounded border bg-chat-area px-4 py-2 text-center font-medium border-border hover:bg-sidebar" %>
+  <div class="flex-1 overflow-y-auto py-4">
     <ul class="space-y-3">
       <% Current.user.chats.ordered.limit(10).each do |chat| %>
         <li>
-          <%= link_to chat.title.presence || "chat #{chat.id}", chat_path(chat), class: "block w-full text-left px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600" %>
+          <%= link_to chat.title.presence || "chat #{chat.id}", chat_path(chat), class: "block w-full rounded border bg-chat-area px-4 py-2 text-left border-border hover:bg-sidebar" %>
         </li>
       <% end %>
     </ul>
   </div>
-  <div class="flex items-center gap-4 justify-between">
-    <%= link_to chats_path, class: "flex justify-between items-center w-full p-4 rounded-md" do %>
-      <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold">
+  <div class="flex items-center justify-between gap-4">
+    <%= link_to chats_path, class: "flex w-full items-center justify-between rounded-md p-4" do %>
+      <div
+        class="flex h-8 w-8 items-center justify-center rounded-full font-bold bg-border text-text-primary"
+      >
         <%= Current.user.email_address.split("@").first.first.upcase %>
       </div>
-      <%= Current.user.email_address %>
+      <span class="text-text-primary">
+        <%= Current.user.email_address %>
+      </span>
     <% end %>
   </div>
 </nav>

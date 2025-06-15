@@ -1,6 +1,6 @@
 <%= render "shared/nav" %>
-<section class="flex flex-1 flex-col items-center h-screen transition-all duration-300">
-  <section class="flex-1 overflow-y-auto w-full " data-scroll-target="container">
+<section class="flex flex-1 flex-col items-center h-screen transition-all duration-300 bg-sidebar">
+  <section class="flex-1 overflow-y-auto w-full border-l border-b border-border rounded-bl-md bg-chat-area" data-scroll-target="container">
     <%= turbo_stream_from [Current.user, :chats] %>
     <%= turbo_stream_from [@chat, :messages] %>
     <div id="messages" class="flex flex-col gap-4 p-8 my-4 w-full">

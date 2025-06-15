@@ -1,3 +1,15 @@
-<button class="<%= button_classes %>">
-  <%= @text %>
-</button> 
+<%= button_tag type:@type, class: button_classes, data: @data do %>
+  <%# Render icon if present and positioned left %>
+  <% if render_icon? && @icon_position == :left %>
+    <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %> <%# Increased icon size slightly for icon-only buttons %>
+  <% end %>
+  <%# Render text if present %>
+  <% if render_text? %>
+    <span><%= @text %></span>
+  <% end %>
+  <%# Render icon if present and positioned right %>
+  <% if render_icon? && @icon_position == :right %>
+    <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %> <%# Increased icon size slightly %>
+  <% end %>
+<% end %>
+

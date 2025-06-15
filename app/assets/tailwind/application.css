@@ -5,22 +5,49 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
-  --sidebar-color: #000000;
-  --chat-area-color: oklch(21% .034 264.665);
-  --chat-message-color: oklch(27.8% .033 256.848);
-  --chat-entry-color: oklch(37.3% .034 259.733);
+  /* Backgrounds & Surfaces */
+  --sidebar-color: #e8eae3; /* Light Khaki */
+  --chat-area-color: #f8f7f2; /* Parchment */
+  --chat-message-color: #e8eae3; /* Light Khaki */
+  --chat-entry-color: #ffffff; /* White for input contrast */
+
+  /* Text */
+  --text-primary-color: #283618; /* Dark Olive */
+  --text-secondary-color: #6b705c; /* Muted Green-Gray */
+
+  /* Accents & Borders */
+  --primary-color: #588157; /* Vibrant Leaf Green */
+  --border-color: #cad2c5; /* Soft Green-Gray */
 }
 
+/* Overrides for the dark theme */
 [data-theme="dark"] {
-  --sidebar-color: oklch(27.8% .033 256.848);
-  --chat-area-color: oklch(21% .034 264.665);
-  --chat-message-color: oklch(27.8% .033 256.848);
-  --chat-entry-color: oklch(37.3% .034 259.733);
+  /* Backgrounds & Surfaces */
+  --sidebar-color: #2a4031; /* Dark Muted Green */
+  --chat-area-color: #1a2e21; /* Dark Forest Green */
+  --chat-message-color: #2a4031; /* Dark Muted Green */
+  --chat-entry-color: #1a2e21; /* Dark Forest Green */
+
+  /* Text */
+  --text-primary-color: #fefae0; /* Cornsilk Off-White */
+  --text-secondary-color: #bcc4b7; /* Light Muted Sage */
+
+  /* Accents & Borders */
+  --primary-color: #a3b18a; /* Soft Moss Green */
+  --border-color: #3a5a40; /* Mid-tone Green */
 }
 
+/*
+ * Injects the CSS variables into Tailwind's theme,
+ * creating utility classes like `bg-sidebar`, `text-primary`, etc.
+ */
 @theme inline {
   --color-sidebar: var(--sidebar-color);
   --color-chat-area: var(--chat-area-color);
   --color-chat-message: var(--chat-message-color);
   --color-chat-entry: var(--chat-entry-color);
+  --color-text-primary: var(--text-primary-color);
+  --color-text-secondary: var(--text-secondary-color);
+  --color-primary: var(--primary-color);
+  --color-border: var(--border-color);
 }
