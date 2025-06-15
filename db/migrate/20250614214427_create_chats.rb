@@ -7,10 +7,9 @@ class CreateChats < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
+    Message.destroy_all
+
     remove_reference :messages, :user
-
-    Message.where(chat: nil).destroy_all
-
     add_reference :messages, :chat, null: false, foreign_key: true
   end
 end
