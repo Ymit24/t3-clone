@@ -6,7 +6,7 @@
   <% end %>
 </div>
 <nav
-  class="hidden h-screen w-64 flex-col justify-between overflow-hidden px-4 pt-4 pb-1 md:flex bg-sidebar text-text-primary"
+  class="hidden h-screen w-64 flex-col justify-between overflow-hidden px-4 pt-4 pb-8 md:flex bg-sidebar text-text-primary"
 >
   <%= link_to "New Chat", chats_path, class: "block rounded border bg-chat-area px-4 py-2 text-center font-medium border-border hover:bg-sidebar" %>
   <div class="flex-1 overflow-y-auto py-4">
@@ -19,7 +19,7 @@
     </ul>
   </div>
   <div class="flex items-center justify-between gap-4">
-    <%= link_to chats_path, class: "flex w-full items-center justify-between rounded-md p-4" do %>
+    <%= link_to chats_path, class: "flex w-full items-center justify-between p-4" do %>
       <div
         class="flex h-8 w-8 items-center justify-center rounded-full font-bold bg-border text-text-primary"
       >
