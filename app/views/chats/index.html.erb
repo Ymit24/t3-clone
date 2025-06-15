@@ -1,2 +1,23 @@
-<%= render "shared/nav" %>
-<div class="flex-1 h-full bg-chat-area border-l border-border"></div>
+<nav
+  class="flex w-full h-screen w-64 flex-col justify-between overflow-hidden px-4 pt-4 pb-12 md:flex bg-sidebar text-text-primary"
+>
+  <%= link_to "New Chat", new_chat_path, class: "block rounded-lg border bg-chat-area px-4 py-2 text-center font-medium border-border hover:bg-sidebar" %>
+  <div class="flex-1 overflow-y-auto py-4">
+    <ul class="space-y-3">
+      <%= turbo_stream_from [Current.user, :chats] %>
+      <% Current.user.chats.ordered.limit(10).each do |chat| %>
+        <%= render "chats/chat", chat: %>
+      <% end %>
+    </ul>
+  </div>
+  <%= link_to edit_account_path(Current.user.account), class: "flex w-full items-center justify-between gap-4" do %>
+    <div
+        class="flex size-8 aspect-square flex items-center justify-center rounded-full font-bold bg-border text-text-primary"
+      >
+      <%= Current.user.email_address.split("@").first.first.upcase %>
+    </div>
+    <div class="flex-1 text-ellipse text-end">
+      <%= Current.user.account.nickname || Current.user.email_address %>
+    </div>
+  <% end %>
+</nav>

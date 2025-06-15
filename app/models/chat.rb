@@ -22,5 +22,5 @@ class Chat < ApplicationRecord
   validates :user, presence: true
   validates :title, presence: true
 
-  broadcasts_to ->(chat) { [chat.user, :chats] }
+  broadcasts_to ->(chat) { [ chat.user, :chats ] }
 end

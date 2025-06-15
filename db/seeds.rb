@@ -13,3 +13,4 @@ User.destroy_all
 LlmModel.destroy_all
 LlmModel.create!(name: "Gemma", provider: "openrouter", model: "google/gemma-3n-e4b-it:free")
 LlmModel.create!(name: "Llama 3.3", provider: "openrouter", model: "meta-llama/llama-3.3-8b-instruct:free")
+LlmModel.create!(name: "Gemini Flash 2.5", provider: "openrouter", model: "google/gemini-2.5-flash-preview-05-20")

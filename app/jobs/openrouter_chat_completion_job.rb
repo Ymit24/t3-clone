@@ -26,11 +26,14 @@ class OpenrouterChatCompletionJob < ApplicationJob
       puts "json: #{json}"
       assistant_message = json.dig(:choices, 0, :message, :content)
 
-      chat.messages.create(
-        value: assistant_message,
-        llm_model: llm_model,
-        is_system: true,
-      )
+      Chat.transaction do
+        chat.messages.create!(
+          value: assistant_message,
+          llm_model: llm_model,
+          is_system: true,
+        )
+        chat.update!(generating: false)
+      end
     else
       raise "OpenRouter API error: #{res.code}"
     end
@@ -38,4 +41,3 @@ class OpenrouterChatCompletionJob < ApplicationJob
     puts "error occurred: #{e.message}"
   end
 end
-

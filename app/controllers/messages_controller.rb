@@ -4,6 +4,7 @@ class MessagesController < ApplicationController
     def create
         @message = @chat.messages.new(message_params)
         if @message.save
+          @chat.update!(generating: true)
           OpenrouterChatCompletionJob.perform_later(@chat, @message.llm_model)
           @message = @chat.messages.new
         end
