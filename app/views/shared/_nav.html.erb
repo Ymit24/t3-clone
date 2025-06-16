@@ -1,12 +1,12 @@
 <div
-  class="fixed top-8 left-8 z-10 block h-12 w-12 rounded-full border p-2 md:hidden bg-primary border-border"
+  class="fixed top-8 left-8 z-10 block h-12 w-12 rounded-full border-r p-2 md:hidden bg-primary border-border"
 >
   <%= link_to chats_path, class: "flex h-full w-full items-center justify-center" do %>
     <%= heroicon "bars-3", options: { class: "h-6 w-6 text-chat-area" } %>
   <% end %>
 </div>
 <nav
-  class="hidden h-screen w-64 flex-col justify-between overflow-hidden px-4 pt-4 pb-12 md:flex bg-sidebar text-text-primary"
+  class="hidden h-screen w-64 flex-col justify-between overflow-hidden px-4 py-4 md:flex bg-sidebar text-text-primary"
 >
   <%= link_to "New Chat", new_chat_path, class: "block rounded-lg border bg-chat-area px-4 py-2 text-center font-medium border-border hover:bg-sidebar" %>
   <div class="flex-1 overflow-y-auto py-4">

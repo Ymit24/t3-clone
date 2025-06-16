@@ -1,12 +1,15 @@
 <%= render "shared/nav" %>
-<section class="flex flex-1 flex-col items-center h-screen transition-all duration-300 bg-sidebar">
-  <section class="flex-1 overflow-y-auto w-full md:border-l border-b border-border md:rounded-bl-md bg-chat-area" data-scroll-target="container">
-    <%= turbo_stream_from [@chat, :messages] %>
-    <div id="messages" class="flex flex-col gap-4 p-8 my-4 w-full">
-      <%= render partial: "messages/message", collection: @chat.messages.ordered.select(&:persisted?) %>
-    </div>
-  </section>
-  <footer class="w-full">
-    <%= render partial: "messages/form", locals: { message: @chat.messages.new } %>
-  </footer>
+<section class="flex flex-1 flex-col items-center h-screen transition-all duration-300">
+    <section class="flex-1 overflow-y-auto w-full bg-chat-area p-4" data-scroll-target="container">
+        <%= turbo_stream_from [@chat, :messages] %>
+        <%= turbo_stream_from [@chat, :loading_status] %>
+        <div id="messages" class="flex flex-col gap-4 my-4 w-full">
+            <%= render partial: "messages/message", collection: @chat.messages.ordered.select(&:persisted?) %>
+        </div>
+        <div id="loading-status">
+        </div>
+    </section>
+    <footer class="w-[70%]">
+        <%= render partial: "messages/form", locals: { message: @chat.messages.new } %>
+    </footer>
 </section>

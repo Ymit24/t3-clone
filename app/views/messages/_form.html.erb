@@ -1,11 +1,11 @@
-<%= form_with(model: [@chat, message], id: dom_id(message), class: "flex flex-row items-center justify-between gap-4 w-full h-32 transition-all duration-100 ease-in-out p-4 bg-sidebar") do |form| %>
+<%= form_with(model: [@chat, message], id: dom_id(message), class: "flex flex-row items-center justify-between gap-4 w-full h-16 rounded-tl-md rounded-tr-md border-l border-t border-r border-border transition-all duration-100 ease-in-out p-4 bg-sidebar") do |form| %>
   <%= form.select :llm_model_id,
                   options_from_collection_for_select(LlmModel.all, :id, :name),
                   {},
                   {
                     class: "w-28 bg-transparent text-text-primary text-sm border-0 focus:ring-0 focus:outline-none appearance-none pr-8 py-2 pl-2 cursor-pointer",
                   } %>
-  <%= form.text_area :value,
+  <%= form.text_field :value,
               autocomplete: "off",
               placeholder: "Prompt...",
               required: true,

@@ -24,4 +24,12 @@ class Message < ApplicationRecord
   scope :ordered, -> { order(created_at: :asc) }
 
   broadcasts_to ->(message) { [message.chat, :messages] }
+
+  after_create_commit do
+    if is_system
+      broadcast_update_to [chat, :loading_status], target: "loading-status", html: ""
+    else
+      broadcast_replace_to [chat, :loading_status], target: "loading-status", partial: "messages/loading_indicator"
+    end
+  end
 end
