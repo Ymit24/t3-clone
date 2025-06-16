@@ -8,6 +8,9 @@
             <%= render partial: "messages/message", collection: @chat.messages.ordered.select(&:persisted?) %>
         </div>
         <div id="loading-status">
+        <% if @chat.generating %>
+          <%= render "messages/loading_indicator" %>
+        <% end %>
         </div>
     </section>
     <footer class="w-[70%]">

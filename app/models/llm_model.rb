@@ -12,6 +12,7 @@
 
 class LlmModel < ApplicationRecord
   has_many :messages, dependent: :destroy
+  has_many :generations, dependent: :destroy
 
   validates :name, presence: true
   validates :provider, presence: true

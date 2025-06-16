@@ -1,6 +1,5 @@
-<% puts "\n\n\nchat.generating: #{chat.generating}\n\n\n" %>
 <% if chat.generating %>
-<%= link_to chat_path(chat), 
+<%= link_to chat_cancel_path(chat), 
           data: { turbo_method: :post },
           class: "inline-flex items-center justify-center rounded-md p-2 text-text-primary hover:bg-chat-area transition-colors duration-200" do %>
 <%= heroicon "stop", options: { class: "h-5 w-5" } %>

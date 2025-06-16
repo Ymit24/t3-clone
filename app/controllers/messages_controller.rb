@@ -5,7 +5,11 @@ class MessagesController < ApplicationController
         @message = @chat.messages.new(message_params)
         if @message.save
           @chat.update!(generating: true)
-          OpenrouterChatCompletionJob.perform_later(@chat, @message.llm_model)
+          generation = @chat.generations.create!(
+            llm_model: @message.llm_model,
+            content: ""
+          )
+          OpenrouterChatCompletionJob.perform_later(generation)
           @message = @chat.messages.new
         end
         respond_to do |format|

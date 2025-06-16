@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
   resources :chats, only: %i[new index show destroy] do
     resources :messages, only: %i[create]
+    resource :cancel, only: [:create], controller: 'chats/cancel'
   end
 
   if Rails.env.development?

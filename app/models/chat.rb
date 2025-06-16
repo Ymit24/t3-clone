@@ -16,6 +16,7 @@
 class Chat < ApplicationRecord
   belongs_to :user
   has_many :messages, dependent: :destroy
+  has_many :generations, dependent: :destroy
 
   scope :ordered, -> { order(created_at: :desc) }
 
@@ -24,7 +25,6 @@ class Chat < ApplicationRecord
 
   broadcasts_to ->(chat) { [ chat.user, :chats ] }
 
-
   after_save_commit do
     broadcast_update_to(
       [self, :send_button],
@@ -32,5 +32,13 @@ class Chat < ApplicationRecord
       partial: "messages/send_button",
       locals: { chat: self }
     )
+  end
+
+  after_save_commit do
+    if generating
+      broadcast_replace_to [self, :loading_status], target: "loading-status", partial: "messages/loading_indicator"
+    else
+      broadcast_update_to [self, :loading_status], target: "loading-status", html: ""
+    end
   end
 end

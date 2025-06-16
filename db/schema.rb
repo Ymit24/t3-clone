@@ -32,6 +32,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_203619) do
     t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
+  create_table "generations", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.bigint "llm_model_id", null: false
+    t.text "content"
+    t.boolean "canceled", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_generations_on_chat_id"
+    t.index ["llm_model_id"], name: "index_generations_on_llm_model_id"
+  end
+
   create_table "llm_models", force: :cascade do |t|
     t.string "name", null: false
     t.string "provider", null: false
@@ -212,6 +223,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_203619) do
 
   add_foreign_key "accounts", "users"
   add_foreign_key "chats", "users"
+  add_foreign_key "generations", "chats"
+  add_foreign_key "generations", "llm_models"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "llm_models"
   add_foreign_key "sessions", "users"

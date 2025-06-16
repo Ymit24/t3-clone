@@ -1,43 +1,81 @@
 require "net/http"
+require_relative "../services/openrouter_service"
 
 
 class OpenrouterChatCompletionJob < ApplicationJob
   queue_as :default
 
-  def perform(chat, llm_model)
-    api_key = ENV["OPENROUTER_API_KEY"] or raise "OPENROUTER_API_KEY is not set"
+  class OpenRouterError < StandardError; end
+  class InvalidApiKeyError < OpenRouterError; end
+  class RateLimitError < OpenRouterError; end
+  class NetworkError < OpenRouterError; end
+  class InvalidModelError < OpenRouterError; end
 
-    uri = URI("https://openrouter.ai/api/v1/chat/completions")
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    req = Net::HTTP::Post.new(uri.path, {
-      "Content-Type" => "application/json",
-      "Authorization" => "Bearer #{api_key}"
-    })
-    req.body = {
-      model: llm_model.model,
-      messages: chat.messages.map do |message|
-        { role: message.is_system ? "assistant" : "user", content: message.value }
-      end
-    }.to_json
-    res = http.request(req)
-    if res.code == "200"
-      json = JSON.parse(res.body, symbolize_names: true)
-      puts "json: #{json}"
-      assistant_message = json.dig(:choices, 0, :message, :content)
+  def perform(generation)
+    chat = generation.chat
+    api_key = chat.user.account.openrouter_key or raise InvalidApiKeyError, "No OpenRouter API key found. Please add your API key in your account settings."
 
-      Chat.transaction do
-        chat.messages.create!(
-          value: assistant_message,
-          llm_model: llm_model,
-          is_system: true,
-        )
-        chat.update!(generating: false)
-      end
-    else
-      raise "OpenRouter API error: #{res.code}"
+    puts "\n\n\n"
+    puts "Starting OpenRouter chat completion for chat #{chat.id} with model #{generation.llm_model.model}"
+    service = OpenrouterService.new(api_key)
+    assistant_message = service.chat_completion(
+      model: generation.llm_model.model,
+      messages: chat.messages
+    )
+    puts "Successfully received response from OpenRouter"
+    puts "\n\n\n"
+
+    # Check if generation was canceled while we were waiting for the response
+    puts "\n\n\n\n----------------\nis canceled: #{generation.reload.inspect}\n+++++++++++++\n\n\n\n\n"
+    if generation.reload.canceled?
+      generation.destroy
+      return
     end
+
+    Chat.transaction do
+      chat.messages.create!(
+        value: assistant_message,
+        llm_model: generation.llm_model,
+        is_system: true,
+      )
+      chat.update!(generating: false)
+      generation.destroy!
+    end
+  rescue InvalidApiKeyError => e
+    handle_error(generation, "Please add your OpenRouter API key in your account settings.")
+  rescue RateLimitError => e
+    handle_error(generation, "Rate limit exceeded. Please try again in a few minutes.")
+  rescue NetworkError => e
+    handle_error(generation, "Network error occurred. Please check your internet connection and try again.")
+  rescue InvalidModelError => e
+    handle_error(generation, "The selected model is currently unavailable. Please try a different model.")
+  rescue OpenRouterError => e
+    handle_error(generation, "An error occurred with the OpenRouter service. Please try again later.")
   rescue => e
-    puts "error occurred: #{e.message}"
+    puts "Unexpected error occurred: #{e.message}"
+    handle_error(generation, "An unexpected error occurred. Please try again later.")
+  end
+
+  private
+
+  def handle_error(generation, message)
+    puts "Error occurred: #{message}"
+
+    puts "\n\n\n\n----------------\nis canceled: #{generation.reload.inspect}\n+++++++++++++\n\n\n\n\n"
+    if generation.reload.canceled?
+      generation.destroy!
+      return
+    end
+
+    Chat.transaction do
+      chat = generation.chat
+      chat.messages.create!(
+        value: message,
+        is_system: true,
+        llm_model: generation.llm_model,
+      )
+      chat.update!(generating: false)
+      generation.destroy!
+    end
   end
 end
