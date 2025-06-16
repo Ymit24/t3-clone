@@ -1,7 +1,6 @@
 <div class="bg-chat-area w-screen h-screen px-4 md:px-48 py-8 md:py-16 space-y-8">
   <!-- Back to Chats Link -->
-  <%= render LinkComponent.new(text: "← Back to Chats", path: root_url, classes: "text-primary hover:text-primary/80 text-sm hidden md:block") %>
-  <%= render LinkComponent.new(text: "← Back to Chats", path: chats_path, classes: "text-primary hover:text-primary/80 text-sm md:hidden") %>
+  <%= render LinkComponent.new(text: "← Back to Chats", path: root_url, classes: "text-primary hover:text-primary/80 text-sm") %>
   <!-- Account Settings Header -->
   <h1 class="text-2xl font-bold text-text-primary">Account Settings</h1>
   <!-- Account Settings Form -->
