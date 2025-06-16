@@ -11,11 +11,8 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_06_15_203619) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_catalog.plpgsql"
-
   create_table "accounts", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.string "openrouter_key"
     t.string "nickname", limit: 9
     t.datetime "created_at", null: false
@@ -24,7 +21,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_203619) do
   end
 
   create_table "chats", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -33,8 +30,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_203619) do
   end
 
   create_table "generations", force: :cascade do |t|
-    t.bigint "chat_id", null: false
-    t.bigint "llm_model_id", null: false
+    t.integer "chat_id", null: false
+    t.integer "llm_model_id", null: false
     t.text "content"
     t.boolean "canceled", default: false
     t.datetime "created_at", null: false
@@ -53,17 +50,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_203619) do
 
   create_table "messages", force: :cascade do |t|
     t.string "value"
-    t.bigint "llm_model_id", null: false
+    t.integer "llm_model_id", null: false
     t.boolean "is_system", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "chat_id", null: false
+    t.integer "chat_id", null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["llm_model_id"], name: "index_messages_on_llm_model_id"
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.string "ip_address"
     t.string "user_agent"
     t.datetime "created_at", null: false
