@@ -21,7 +21,7 @@
     <div
         class="flex size-8 aspect-square flex items-center justify-center rounded-full font-bold bg-border text-text-primary"
       >
-      <%= Current.user.account.nickname.first || email_address.first.upcase %>
+      <%= Current.user.account.nickname&.first || Current.user.email_address.first.upcase %>
     </div>
     <div class="flex-1 text-ellipse text-end">
       <%= Current.user.account.nickname || Current.user.email_address %>
