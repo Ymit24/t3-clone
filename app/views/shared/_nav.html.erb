@@ -7,28 +7,27 @@
 
 <!-- Sidebar Navigation -->
 <nav class="hidden h-screen w-72 flex-col justify-between overflow-hidden border-r border-border bg-sidebar text-text-primary md:flex">
-  <!-- Top Section -->
-  <div class="flex flex-col h-full">
-    <div class="p-6">
-      <%= link_to new_chat_path, class: "flex items-center gap-2 rounded-lg border bg-chat-area px-4 py-3 text-center font-medium border-border hover:bg-sidebar transition-colors" do %>
-        <%= heroicon "plus", options: { class: "h-5 w-5" } %>
-        <span>New Chat</span>
-      <% end %>
-    </div>
-    
-    <div class="flex-1 overflow-y-auto px-6">
-      <h2 class="mb-3 text-sm font-medium text-text-secondary">Recent Chats</h2>
-      <ul class="space-y-1.5">
-        <%= turbo_stream_from [Current.user, :chats] %>
-        <% Current.user.chats.ordered.limit(10).each do |chat| %>
-          <%= render "chats/chat", chat: %>
-        <% end %>
-      </ul>
-    </div>
+  <!-- Top Section: New Chat -->
+  <div class="p-6 shrink-0">
+    <%= link_to new_chat_path, class: "flex items-center gap-2 rounded-lg border bg-chat-area px-4 py-3 text-center font-medium border-border hover:bg-sidebar transition-colors" do %>
+      <%= heroicon "plus", options: { class: "h-5 w-5" } %>
+      <span>New Chat</span>
+    <% end %>
   </div>
 
-  <!-- Bottom Section -->
-  <div class="border-t border-border p-4">
+  <!-- Middle Section: Recent Chats (scrollable) -->
+  <div class="flex-1 min-h-0 overflow-y-auto px-6">
+    <h2 class="mb-3 text-sm font-medium text-text-secondary">Recent Chats</h2>
+    <ul class="space-y-1.5">
+      <%= turbo_stream_from [Current.user, :chats] %>
+      <% Current.user.chats.ordered.limit(10).each do |chat| %>
+        <%= render "chats/chat", chat: %>
+      <% end %>
+    </ul>
+  </div>
+
+  <!-- Bottom Section: Account -->
+  <div class="border-t border-border p-4 shrink-0">
     <%= link_to edit_account_path(Current.user.account), class: "flex w-full items-center justify-between gap-4 rounded-lg p-2 hover:bg-chat-area/50 transition-colors" do %>
       <div class="flex items-center gap-3">
         <div class="flex size-8 items-center justify-center rounded-full bg-primary/10 font-medium text-primary">
