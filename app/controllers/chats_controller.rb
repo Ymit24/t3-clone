@@ -15,7 +15,7 @@ class ChatsController < ApplicationController
 
   def destroy
     @chat.destroy
-   redirect_to root_url if Current.user.chats.empty?
+   redirect_to root_url 
   end
 
   private

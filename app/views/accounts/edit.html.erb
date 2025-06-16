@@ -1,4 +1,11 @@
 <div class="bg-chat-area w-screen h-screen px-4 md:px-48 py-8 md:py-16 space-y-8">
+  <!-- Flash Messages -->
+  <% if flash[:notice] %>
+    <div class="mb-4 rounded-md bg-green-100 px-4 py-3 text-green-800"> <%= flash[:notice] %> </div>
+  <% elsif flash[:alert] %>
+    <div class="mb-4 rounded-md bg-red-100 px-4 py-3 text-red-800"> <%= flash[:alert] %> </div>
+  <% end %>
+
   <!-- Back to Chats Link -->
   <%= render LinkComponent.new(text: "← Back to Chats", path: root_url, classes: "text-primary hover:text-primary/80 text-sm") %>
   <!-- Account Settings Header -->
@@ -10,11 +17,17 @@
       <div class="space-y-2">
         <%= form.label :nickname, "Nickname", class: "block text-sm font-medium text-text-primary" %>
         <%= form.text_field :nickname, placeholder: "Enter your nickname", class: "w-full p-2 border border-border rounded-md bg-chat-entry text-text-primary placeholder-text-secondary focus:ring-primary focus:border-primary" %>
+        <% if @account.errors[:nickname].any? %>
+          <div class="text-red-600 text-xs mt-1"><%= @account.errors[:nickname].join(", ") %></div>
+        <% end %>
       </div>
       <!-- Openrouter Key Field -->
       <div class="space-y-2">
         <%= form.label :openrouter_key, "Openrouter Key", class: "block text-sm font-medium text-text-primary" %>
         <%= form.text_field :openrouter_key, type: :password, placeholder: "Enter your Openrouter key", class: "w-full p-2 border border-border rounded-md bg-chat-entry text-text-primary placeholder-text-secondary focus:ring-primary focus:border-primary" %>
+        <% if @account.errors[:openrouter_key].any? %>
+          <div class="text-red-600 text-xs mt-1"><%= @account.errors[:openrouter_key].join(", ") %></div>
+        <% end %>
       </div>
       <!-- Submit Button -->
       <div>

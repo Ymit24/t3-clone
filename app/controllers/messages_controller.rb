@@ -2,19 +2,19 @@ class MessagesController < ApplicationController
     before_action :set_chat
 
     def create
-        @message = @chat.messages.new(message_params)
-        if @message.save
-          @chat.update!(generating: true)
-          generation = @chat.generations.create!(
-            llm_model: @message.llm_model,
-            content: ""
-          )
-          OpenrouterChatCompletionJob.perform_later(generation)
-          @message = @chat.messages.new
-        end
-        respond_to do |format|
-          format.turbo_stream
-        end
+      @message = @chat.messages.new(message_params)
+      if @message.save
+        @chat.update!(generating: true)
+        generation = @chat.generations.create!(
+          llm_model: @message.llm_model,
+          content: ""
+        )
+        OpenrouterChatCompletionJob.perform_later(generation)
+        @message = @chat.messages.new
+      end
+      respond_to do |format|
+        format.turbo_stream
+      end
     end
 
     private

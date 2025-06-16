@@ -6,7 +6,13 @@ class AccountsController < ApplicationController
   end
 
   def update
-    @account.update(account_params)
+    if @account.update(account_params)
+      flash[:notice] = "Account updated successfully."
+      redirect_to edit_account_path(@account)
+    else
+      flash.now[:alert] = "There was a problem updating your account."
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
