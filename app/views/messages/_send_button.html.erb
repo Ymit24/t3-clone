@@ -1,6 +1,7 @@
 <% if chat.generating %>
 <%= link_to chat_cancel_path(chat), 
           data: { turbo_method: :post },
+          disabled: chat.user.account.openrouter_key.blank?,
           class: "inline-flex items-center justify-center rounded-md p-2 text-text-primary hover:bg-chat-area transition-colors duration-200" do %>
 <%= heroicon "stop", options: { class: "h-5 w-5" } %>
 <% end %>
@@ -9,6 +10,7 @@
         icon: "paper-airplane", 
         type: :submit, 
         variant: :primary,
+        disabled: chat.user.account.openrouter_key.blank?,
         data: { 
           form_disable_target: "element",
           action: "form-disable#disable"

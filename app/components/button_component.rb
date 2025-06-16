@@ -19,6 +19,7 @@ class ButtonComponent < ViewComponent::Base
     path: nil,
     method: nil,
     confirm: nil,
+    disabled: nil,
     data: {}
   )
     @text = text
@@ -29,6 +30,7 @@ class ButtonComponent < ViewComponent::Base
     @path = path
     @method = method
     @confirm = confirm
+    @disabled = disabled || false
     @data = data
   end
 

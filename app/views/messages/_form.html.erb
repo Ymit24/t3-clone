@@ -7,8 +7,9 @@
                   } %>
   <%= form.text_field :value,
               autocomplete: "off",
-              placeholder: "Prompt...",
+              placeholder: @chat.user.account.openrouter_key.blank? ?  "Add your open router key to chat" : "Prompt...",
               required: true,
+              disabled: @chat.user.account.openrouter_key.blank?,
               data: { form_disable_target: "element" },
               class: "flex-1 rounded-md resize-none border-0 bg-chat-entry p-2 text-base text-text-primary p1laceholder-text-secondary focus:border-primary focus:outline-none focus:ring-0 overflow-y-auto"%>
   <div id="send-button">
