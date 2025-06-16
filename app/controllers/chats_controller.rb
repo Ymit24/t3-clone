@@ -1,5 +1,4 @@
 class ChatsController < ApplicationController
-  before_action :set_chat, only: %i[show destroy]
   def index
     @chats = Current.user.chats.ordered
   end
@@ -10,19 +9,14 @@ class ChatsController < ApplicationController
   end
 
   def show
-    redirect_to root_url unless @chat
+    @chat = Current.user.chats.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_url
   end
 
   def destroy
-    @chat.destroy
-   redirect_to root_url 
-  end
-
-  private
-
-  def set_chat
     @chat = Current.user.chats.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    @chat = nil
+    @chat.destroy
+    redirect_to root_url 
   end
 end

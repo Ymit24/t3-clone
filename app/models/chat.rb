@@ -32,9 +32,7 @@ class Chat < ApplicationRecord
       partial: "messages/send_button",
       locals: { chat: self }
     )
-  end
 
-  after_save_commit do
     if generating
       broadcast_replace_to [self, :loading_status], target: "loading-status", partial: "messages/loading_indicator"
     else

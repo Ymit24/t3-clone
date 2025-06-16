@@ -9,7 +9,7 @@
 <nav class="hidden h-screen w-72 flex-col justify-between overflow-hidden border-r border-border bg-sidebar text-text-primary md:flex">
     <!-- Top Section: New Chat -->
     <div class="p-6 shrink-0">
-        <%= link_to new_chat_path, class: "flex items-center gap-2 rounded-lg border bg-chat-area px-4 py-3 text-center font-medium border-border hover:bg-sidebar transition-colors" do %>
+        <%= link_to new_chat_path, data: { turbo_prefetch: false }, class: "flex items-center gap-2 rounded-lg border bg-chat-area px-4 py-3 text-center font-medium border-border hover:bg-sidebar transition-colors" do %>
         <%= heroicon "plus", options: { class: "h-5 w-5" } %>
         <span>New Chat</span>
         <% end %>
@@ -20,7 +20,7 @@
     <div class="flex-1 min-h-0 overflow-y-auto px-6">
         <ul class="space-y-1.5">
             <%= turbo_stream_from [Current.user, :chats] %>
-            <% Current.user.chats.ordered.limit(10).each do |chat| %>
+            <% Current.user.chats.ordered.each do |chat| %>
             <%= render "chats/chat", chat: %>
             <% end %>
         </ul>

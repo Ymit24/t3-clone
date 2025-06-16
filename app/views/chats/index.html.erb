@@ -1,11 +1,11 @@
 <nav
   class="flex w-full h-screen w-64 flex-col justify-between overflow-hidden px-4 pt-4 pb-12 md:flex bg-sidebar text-text-primary"
 >
-  <%= link_to "New Chat", new_chat_path, class: "block rounded-lg border bg-chat-area px-4 py-2 text-center font-medium border-border hover:bg-sidebar" %>
+  <%= link_to "New Chat", data: { turbo_prefetch: false }, new_chat_path, class: "block rounded-lg border bg-chat-area px-4 py-2 text-center font-medium border-border hover:bg-sidebar" %>
   <div class="flex-1 overflow-y-auto py-4">
     <ul class="space-y-3">
       <%= turbo_stream_from [Current.user, :chats] %>
-      <% Current.user.chats.ordered.limit(10).each do |chat| %>
+      <% Current.user.chats.ordered.each do |chat| %>
         <%= render "chats/chat", chat: %>
       <% end %>
     </ul>
