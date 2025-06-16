@@ -1,0 +1,18 @@
+<% puts "\n\n\nchat.generating: #{chat.generating}\n\n\n" %>
+<% if chat.generating %>
+<%= link_to chat_path(chat), 
+          data: { turbo_method: :post },
+          class: "inline-flex items-center justify-center rounded-md p-2 text-text-primary hover:bg-chat-area transition-colors duration-200" do %>
+<%= heroicon "stop", options: { class: "h-5 w-5" } %>
+<% end %>
+<% else %>
+<%= render ButtonComponent.new(
+        icon: "paper-airplane", 
+        type: :submit, 
+        variant: :primary,
+        data: { 
+          form_disable_target: "element",
+          action: "form-disable#disable"
+        }
+      ) %>
+<% end %>

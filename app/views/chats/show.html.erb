@@ -1,8 +1,9 @@
 <%= render "shared/nav" %>
+<%= turbo_stream_from [@chat, :messages] %>
+<%= turbo_stream_from [@chat, :loading_status] %>
+<%= turbo_stream_from [@chat, :send_button] %>
 <section class="flex flex-1 flex-col items-center h-screen transition-all duration-300">
     <section class="flex-1 overflow-y-auto w-full bg-chat-area p-4" data-scroll-target="container">
-        <%= turbo_stream_from [@chat, :messages] %>
-        <%= turbo_stream_from [@chat, :loading_status] %>
         <div id="messages" class="flex flex-col gap-4 my-4 w-full">
             <%= render partial: "messages/message", collection: @chat.messages.ordered.select(&:persisted?) %>
         </div>

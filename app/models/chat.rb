@@ -23,4 +23,14 @@ class Chat < ApplicationRecord
   validates :title, presence: true
 
   broadcasts_to ->(chat) { [ chat.user, :chats ] }
+
+
+  after_save_commit do
+    broadcast_update_to(
+      [self, :send_button],
+      target: "send-button",
+      partial: "messages/send_button",
+      locals: { chat: self }
+    )
+  end
 end

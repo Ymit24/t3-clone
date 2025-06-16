@@ -1,30 +1,45 @@
-<div
-  class="fixed top-8 left-8 z-10 block h-12 w-12 rounded-full border-r p-2 md:hidden bg-primary border-border"
->
+<!-- Mobile Menu Button -->
+<div class="fixed top-8 left-8 z-10 block h-12 w-12 rounded-full border p-2 md:hidden bg-sidebar border-border shadow-lg hover:bg-sidebar/90 transition-colors">
   <%= link_to chats_path, class: "flex h-full w-full items-center justify-center" do %>
-    <%= heroicon "bars-3", options: { class: "h-6 w-6 text-chat-area" } %>
+    <%= heroicon "bars-3", options: { class: "h-6 w-6 text-text-primary" } %>
   <% end %>
 </div>
-<nav
-  class="hidden h-screen w-64 flex-col justify-between overflow-hidden px-4 py-4 md:flex bg-sidebar text-text-primary"
->
-  <%= link_to "New Chat", new_chat_path, class: "block rounded-lg border bg-chat-area px-4 py-2 text-center font-medium border-border hover:bg-sidebar" %>
-  <div class="flex-1 overflow-y-auto py-4">
-    <ul class="space-y-3">
-      <%= turbo_stream_from [Current.user, :chats] %>
-      <% Current.user.chats.ordered.limit(10).each do |chat| %>
-        <%= render "chats/chat", chat: %>
+
+<!-- Sidebar Navigation -->
+<nav class="hidden h-screen w-72 flex-col justify-between overflow-hidden border-r border-border bg-sidebar text-text-primary md:flex">
+  <!-- Top Section -->
+  <div class="flex flex-col h-full">
+    <div class="p-6">
+      <%= link_to new_chat_path, class: "flex items-center gap-2 rounded-lg border bg-chat-area px-4 py-3 text-center font-medium border-border hover:bg-sidebar transition-colors" do %>
+        <%= heroicon "plus", options: { class: "h-5 w-5" } %>
+        <span>New Chat</span>
       <% end %>
-    </ul>
+    </div>
+    
+    <div class="flex-1 overflow-y-auto px-6">
+      <h2 class="mb-3 text-sm font-medium text-text-secondary">Recent Chats</h2>
+      <ul class="space-y-1.5">
+        <%= turbo_stream_from [Current.user, :chats] %>
+        <% Current.user.chats.ordered.limit(10).each do |chat| %>
+          <%= render "chats/chat", chat: %>
+        <% end %>
+      </ul>
+    </div>
   </div>
-  <%= link_to edit_account_path(Current.user.account), class: "flex w-full items-center justify-between gap-4" do %>
-    <div
-        class="flex size-8 aspect-square flex items-center justify-center rounded-full font-bold bg-border text-text-primary"
-      >
-      <%= Current.user.account.nickname&.first || Current.user.email_address.first.upcase %>
-    </div>
-    <div class="flex-1 text-ellipse text-end">
-      <%= Current.user.account.nickname || Current.user.email_address %>
-    </div>
-  <% end %>
+
+  <!-- Bottom Section -->
+  <div class="border-t border-border p-4">
+    <%= link_to edit_account_path(Current.user.account), class: "flex w-full items-center justify-between gap-4 rounded-lg p-2 hover:bg-chat-area/50 transition-colors" do %>
+      <div class="flex items-center gap-3">
+        <div class="flex size-8 items-center justify-center rounded-full bg-primary/10 font-medium text-primary">
+          <%= Current.user.account.nickname&.first || Current.user.email_address.first.upcase %>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-sm font-medium"><%= Current.user.account.nickname || Current.user.email_address.split("@").first %></span>
+          <span class="text-xs text-text-secondary"><%= Current.user.email_address %></span>
+        </div>
+      </div>
+      <%= heroicon "cog-6-tooth", options: { class: "h-5 w-5 text-text-secondary" } %>
+    <% end %>
+  </div>
 </nav>
