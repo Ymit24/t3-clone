@@ -2,13 +2,15 @@
 #
 # Table name: messages
 #
-#  id           :integer          not null, primary key
-#  is_system    :boolean          default(FALSE)
-#  value        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  chat_id      :integer          not null
-#  llm_model_id :integer          not null
+#  id                :integer          not null, primary key
+#  is_system         :boolean          default(FALSE)
+#  reasoning_enabled :boolean          default(FALSE), not null
+#  search_enabled    :boolean          default(FALSE), not null
+#  value             :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  chat_id           :integer          not null
+#  llm_model_id      :integer          not null
 #
 # Indexes
 #

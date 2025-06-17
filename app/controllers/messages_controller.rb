@@ -16,6 +16,11 @@ class MessagesController < ApplicationController
 
     def create
       @message = @chat.messages.new(message_params)
+      puts "\n\n\n\n--------------------------------"
+      puts "message_params: #{message_params}"
+      puts "search_enabled: #{@message.search_enabled}"
+      puts "reasoning_enabled: #{@message.reasoning_enabled}"
+      puts "--------------------------------\n\n\n\n"
       if @message.save
         @chat.update!(generating: true)
         generation = @chat.generations.create!(
@@ -41,6 +46,6 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-        params.require(:message).permit(:value, :llm_model_id)
+        params.require(:message).permit(:value, :llm_model_id, :search_enabled, :reasoning_enabled)
     end
 end

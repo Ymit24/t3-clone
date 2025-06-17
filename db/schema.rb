@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_17_061011) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_17_182003) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "openrouter_key"
@@ -56,6 +56,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_061011) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "chat_id", null: false
+    t.boolean "search_enabled", default: false, null: false
+    t.boolean "reasoning_enabled", default: false, null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["llm_model_id"], name: "index_messages_on_llm_model_id"
   end

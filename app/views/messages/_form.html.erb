@@ -7,8 +7,8 @@
                       class: "bg-chat-entry rounded-md text-text-primary text-sm border-border border focus:ring-0 focus:outline-none appearance-none pr-8 py-2 pl-2 cursor-pointer transition-colors duration-150 hover:bg-sidebar hover:border-primary",
                     } %>
     <div class="flex items-center gap-2">
-      <%= render ToggleComponent.new(form: form, attribute: :do_search, icon: "globe-alt", label: "Search") %>
-      <%= render ToggleComponent.new(form: form, attribute: :think, icon: "sparkles", label: "Think") %>
+      <%= render ToggleComponent.new(form: form, attribute: :search_enabled, icon: "globe-alt", label: "Search", initial_checked: message.search_enabled) %>
+      <%= render ToggleComponent.new(form: form, attribute: :reasoning_enabled, icon: "sparkles", label: "Think", initial_checked: message.reasoning_enabled) %>
     </div>
   </div>
   <div class="flex flex-row items-center justify-between gap-4">
