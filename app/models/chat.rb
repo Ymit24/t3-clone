@@ -27,16 +27,16 @@ class Chat < ApplicationRecord
 
   after_save_commit do
     broadcast_update_to(
-      [self, :send_button],
+      [ self, :send_button ],
       target: "send-button",
       partial: "messages/send_button",
       locals: { chat: self }
     )
 
     if generating
-      broadcast_replace_to [self, :loading_status], target: "loading-status", partial: "messages/loading_indicator"
+      broadcast_replace_to [ self, :loading_status ], target: "loading-status", partial: "messages/loading_indicator"
     else
-      broadcast_update_to [self, :loading_status], target: "loading-status", html: ""
+      broadcast_update_to [ self, :loading_status ], target: "loading-status", html: ""
     end
   end
 end

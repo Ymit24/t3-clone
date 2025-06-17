@@ -22,6 +22,7 @@ class Message < ApplicationRecord
   validates :chat, presence: true
 
   scope :ordered, -> { order(created_at: :asc) }
+  scope :after_message, ->(message) { where("created_at > ?", message.created_at).order(created_at: :asc) }
 
-  broadcasts_to ->(message) { [message.chat, :messages] }
+  broadcasts_to ->(message) { [ message.chat, :messages ] }
 end

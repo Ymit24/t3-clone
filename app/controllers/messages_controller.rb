@@ -13,7 +13,12 @@ class MessagesController < ApplicationController
     end
 
     def destroy
-      raise "todo"
+      message = @chat.messages.find(params[:id])
+      messages = @chat.messages.after_message(message)
+      Message.transaction do
+        message.destroy
+        messages.destroy_all
+      end
     end
 
     def create
