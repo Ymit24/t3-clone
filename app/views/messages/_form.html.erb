@@ -7,21 +7,8 @@
                       class: "bg-chat-entry rounded-md text-text-primary text-sm border-border border focus:ring-0 focus:outline-none appearance-none pr-8 py-2 pl-2 cursor-pointer transition-colors duration-150 hover:bg-sidebar hover:border-primary",
                     } %>
     <div class="flex items-center gap-2">
-      <%= form.label :do_search, class: "flex items-center gap-2 rounded-full border border-border bg-chat-entry px-2 py-1 text-text-primary text-base font-medium cursor-pointer transition-colors duration-150 peer-checked:bg-primary peer-checked:text-white hover:bg-sidebar hover:border-primary", for: "do_search_toggle" do %>
-        <%= form.check_box :do_search, class: "sr-only peer" %>
-        <%= heroicon "globe-alt", options: { class: "h-5 w-5 mr-1" } %>
-        Search
-      <% end %>
-      <button type="button" data-controller="toggle-button" data-action="toggle-button#toggle" class="
-        flex items-center gap-2 rounded-full border border-border bg-chat-entry px-2 py-1 text-text-primary text-base font-medium cursor-pointer transition-colors duration-150 peer-checked:bg-primary peer-checked:text-white hover:bg-sidebar hover:border-primary
-        data-[checked=true]:bg-primary data-[checked=true]:text-white data-[checked=true]:border-primary
-      "
-      data-checked="false"
-      >
-        <%= form.check_box :think, class: "sr-only peer", data: {toggle_button_target: "checkbox"} %>
-        <%= heroicon "sparkles", options: { class: "h-5 w-5 mr-1" } %>
-        Think
-      </button>
+      <%= render ToggleComponent.new(form: form, attribute: :do_search, icon: "globe-alt", label: "Search") %>
+      <%= render ToggleComponent.new(form: form, attribute: :think, icon: "sparkles", label: "Think") %>
     </div>
   </div>
   <div class="flex flex-row items-center justify-between gap-4">
