@@ -8,7 +8,9 @@
 <nav class="hidden h-screen w-72 flex-col justify-between overflow-hidden border-r border-border bg-sidebar text-text-primary md:flex">
   <!-- Top Section: New Chat -->
   <div class="p-6 shrink-0">
-    <h4 class="text-center pb-4">Not T3.Chat</h4>
+    <%= link_to root_path do %>
+      <h2 class="text-center pb-4">Not T3.Chat</h2>
+    <% end %>
     <%= link_to new_chat_path, data: { turbo_prefetch: false }, class: "flex items-center gap-2 rounded-lg border bg-chat-area px-4 py-3 text-center font-medium border-border hover:bg-sidebar transition-colors" do %>
       <%= heroicon "plus", options: { class: "h-5 w-5" } %>
       <span>New Chat</span>
