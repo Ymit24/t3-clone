@@ -6,6 +6,9 @@
         <%= markdown(message.value) %>
       </div>
     <% end %>
+    <%= bubble.with_info do %>
+      <span class="font-thin"><%= message.llm_model.model %></span>
+    <% end %>
     <%= bubble.with_action_button(href: chat_message_retry_path(message.chat, message), icon: "arrow-path", color: "text-blue-500") %>
   <% end %>
 <% end %>

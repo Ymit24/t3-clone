@@ -1,5 +1,5 @@
 <% if @tag == :button %>
-  <%= button_to(@href, **@other) do %>
+  <%= button_to(@href, class: "cursor-pointer", **@other) do %>
     <%= helpers.heroicon @icon, options: {class: "w-5 h-5 aspect-square text-text-secondary hover:#{@color} transition-colors duration-200"} %>
   <% end %>
 <% elsif @tag == :a %>
