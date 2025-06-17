@@ -480,6 +480,8 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)
+  redcarpet
+  rouge
   rubocop
   rubocop-performance
   rubocop-rails

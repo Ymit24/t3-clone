@@ -8,3 +8,13 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+@import "rouge";
+
+pre.highlight {
+  padding: 10px;
+}
+
+code {
+  text-wrap: auto;
+}

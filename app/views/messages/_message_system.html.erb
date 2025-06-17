@@ -1,7 +1,11 @@
 <%# locals: (message:) %>
 <%= turbo_frame_tag dom_id(message), class: "self-start", id: dom_id(message) do %>
   <%= render ChatBubbleComponent.new do |bubble| %>
-    <%= bubble.with_body { message.value } %>
+    <%= bubble.with_body do %>
+      <div class="prose">
+        <%= markdown(message.value) %>
+      </div>
+    <% end %>
     <%= bubble.with_action_button(href: chat_message_retry_path(message.chat, message), icon: "arrow-path", color: "text-blue-500") %>
   <% end %>
 <% end %>
