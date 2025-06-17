@@ -1,11 +1,25 @@
-<%= form_with(model: [@chat, message], id: dom_id(message), class: "flex flex-col w-full max-h-48 rounded-tl-md rounded-tr-md border-l border-t border-r border-border transition-all duration-100 ease-in-out p-4 bg-sidebar", data: { controller: "form-disable prompt" }) do |form| %>
-  <div class="flex flex-row items-center justify-between gap-4 ">
+<%= form_with(model: [@chat, message], id: dom_id(message), class: "flex flex-col justify-between w-full max-h-50 rounded-tl-md rounded-tr-md border-l border-t border-r border-border transition-all duration-100 ease-in-out px-4 pb-4 pt-2 bg-sidebar", data: { controller: "form-disable prompt" }) do |form| %>
+  <div class="h-2 flex-1 py-2 flex flex-row items-center gap-2 justify-start transition-all duration-100">
     <%= form.select :llm_model_id,
                     options_from_collection_for_select(LlmModel.all, :id, :name),
                     {},
                     {
-                      class: "w-28 bg-transparent text-text-primary text-sm border-0 focus:ring-0 focus:outline-none appearance-none pr-8 py-2 pl-2 cursor-pointer",
+                      class: "bg-chat-entry rounded-md text-text-primary text-sm border-border border focus:ring-0 focus:outline-none appearance-none pr-8 py-2 pl-2 cursor-pointer transition-colors duration-150 hover:bg-sidebar hover:border-primary",
                     } %>
+    <div class="flex items-center gap-2">
+      <%= form.label :do_search, class: "flex items-center gap-2 rounded-full border border-border bg-chat-entry px-2 py-1 text-text-primary text-base font-medium cursor-pointer transition-colors duration-150 peer-checked:bg-primary peer-checked:text-white hover:bg-sidebar hover:border-primary", for: "do_search_toggle" do %>
+        <%= form.check_box :do_search, class: "sr-only peer" %>
+        <%= heroicon "globe-alt", options: { class: "h-5 w-5 mr-1" } %>
+        Search
+      <% end %>
+      <%= form.label :think, class: "flex items-center gap-2 rounded-full border border-border bg-chat-entry px-2 py-1 text-text-primary text-base font-medium cursor-pointer transition-colors duration-150 peer-checked:bg-primary peer-checked:text-white hover:bg-sidebar hover:border-primary", for: "think_toggle" do %>
+        <%= form.check_box :think, class: "sr-only peer" %>
+        <%= heroicon "sparkles", options: { class: "h-5 w-5 mr-1" } %>
+        Think
+      <% end %>
+    </div>
+  </div>
+  <div class="flex flex-row items-center justify-between gap-4">
     <%= form.text_area :value,
                 autocomplete: "off",
                 placeholder: @chat.user.account.openrouter_key.blank? ?  "Add your open router key to chat" : "Prompt...",
@@ -13,7 +27,10 @@
                 rows: 1,
                 disabled: @chat.user.account.openrouter_key.blank?,
                 data: { form_disable_target: "element", action: "keydown->prompt#keydown input->prompt#resize" },
-                class: "flex-1 max-h-32 rounded-md resize-none border-0 bg-chat-entry p-2 text-base transition-all duration-200 text-text-primary placeholder-text-secondary focus:border-primary focus:outline-none focus:ring-0 overflow-y-auto"%>
+                class: "
+                  flex-1 max-h-32 rounded-md resize-none border border-border bg-chat-entry p-2 text-base transition-all duration-200 text-text-primary placeholder-text-secondary focus:border-primary focus:outline-none focus:ring-0 overflow-y-auto
+                  transition-colors duration-150 hover:bg-sidebar hover:border-primary
+                "%>
     <div id="send-button">
       <%= render "messages/send_button", chat: @chat %>
     </div>
