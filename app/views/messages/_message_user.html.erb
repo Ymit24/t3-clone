@@ -2,8 +2,7 @@
 <%= turbo_frame_tag dom_id(message), class: "self-end", id: dom_id(message) do %>
   <%= render ChatBubbleComponent.new do |bubble| %>
     <%= bubble.with_body { message.value } %>
-    <%= bubble.with_action_link(href: edit_chat_message_path(message.chat, message), icon: "arrow-path", color: "text-blue-500") %>
+    <%= bubble.with_action_button(href: chat_message_retry_path(message.chat, message), icon: "arrow-path", color: "text-blue-500") %>
     <%= bubble.with_action_link(href: edit_chat_message_path(message.chat, message), icon: "pencil-square", color: "text-green-500", data: { turbo_frame: dom_id(message), }) %>
-    <%= bubble.with_action_button(href: chat_message_path(message.chat, message), method: :delete, icon: "trash", color: "text-red-500",data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this message?", turbo_frame: "_top" }) %>
   <% end %>
 <% end %>

@@ -1,24 +1,16 @@
 class MessagesController < ApplicationController
-    before_action :set_chat, only: %i[edit show create update destroy]
+    before_action :set_chat, only: %i[edit show create update]
+    before_action :set_message, only: %i[edit show update]
 
-    def show
-      raise "todo"
-    end
+    def show; end
 
-    def edit
-      @message = @chat.messages.find(params[:id])
-    end
+    def edit; end
 
     def update
-      raise "todo"
-    end
-
-    def destroy
-      message = @chat.messages.find(params[:id])
-      messages = @chat.messages.after_message(message)
-      Message.transaction do
-        message.destroy
-        messages.destroy_all
+      if @message.update(message_params)
+        render :show
+      else
+        render :edit
       end
     end
 
@@ -42,6 +34,10 @@ class MessagesController < ApplicationController
 
     def set_chat
         @chat = Current.user.chats.find(params[:chat_id])
+    end
+
+    def set_message
+      @message = @chat.messages.find(params[:id])
     end
 
     def message_params

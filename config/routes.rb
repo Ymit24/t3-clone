@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   root "home#index"
 
   resources :chats, only: %i[new index show destroy] do
-    resources :messages, only: %i[new show edit create update destroy]
+    resources :messages, only: %i[new show edit create update] do
+      resource :retry, only: [ :create ], controller: "messages/retry"
+    end
     resource :cancel, only: [ :create ], controller: "chats/cancel"
   end
 

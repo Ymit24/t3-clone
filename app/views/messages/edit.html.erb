@@ -1,3 +1,11 @@
-<%= turbo_frame_tag dom_id(@message) do %>
-  foo: <%= @message.inspect %>
+<%= turbo_frame_tag dom_id(@message), class: "self-end", id: dom_id(@message) do %>
+  <%= form_for([ @message.chat, @message ]) do |form| %>
+    <%= render ChatBubbleComponent.new do |bubble| %>
+      <%= bubble.with_body do %>
+        <%= form.text_area :value %>
+      <% end %>
+      <%= bubble.with_action_link(href: chat_message_path(@message.chat, @message), icon: "x-mark", color: "text-green-500", data: { turbo_frame: dom_id(@message), }) %>
+      <%= bubble.with_action_button(type: :submit, icon: "check", color: "text-green-500", data: { turbo_frame: dom_id(@message) }) %>
+    <% end %>
+  <% end %>
 <% end %>
