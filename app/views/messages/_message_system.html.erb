@@ -1,12 +1,7 @@
 <%# locals: (message:) %>
-<div class="max-w-xl self-start flex flex-col gap-2 items-stretch justify-between group" id="<%= dom_id(message) %>">
-  <div id="<%= dom_id(message) %>" class="px-4 py-3 bg-chat-message rounded-lg border border-border flex flex-col gap-2">
-    <%= message.value %>
-  </div>
-  <div class="flex flex-row gap-2 justify-between opacity-0 group-hover:opacity-100 transition-all duration-200">
-    <span class="font-thin text-sm"><%= message.llm_model.model %></span>
-    <%= link_to edit_chat_message_path(message.chat, message) do %>
-      <%= heroicon "arrow-path", options: {class: "w-5 h-5 aspect-square text-text-secondary hover:text-blue-500 transition-colors duration-200"} %>
-    <% end %>
-  </div>
-</div>
+<%= turbo_frame_tag dom_id(message), class: "self-start", id: dom_id(message) do %>
+  <%= render ChatBubbleComponent.new do |bubble| %>
+    <%= bubble.with_body { message.value } %>
+    <%= bubble.with_action_link(href: edit_chat_message_path(message.chat, message), icon: "arrow-path", color: "text-blue-500") %>
+  <% end %>
+<% end %>

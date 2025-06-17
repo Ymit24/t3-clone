@@ -6,6 +6,7 @@ class MessagesController < ApplicationController
     end
 
     def edit
+      @message = @chat.messages.find(params[:id])
     end
 
     def update
