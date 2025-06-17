@@ -13,15 +13,28 @@ class OpenrouterChatCompletionJob < ApplicationJob
 
   def perform(generation)
     chat = generation.chat
-    api_key = chat.user.account.openrouter_key or raise InvalidApiKeyError, "No OpenRouter API key found. Please add your API key in your account settings."
+    case generation.llm_model.provider
+    when "openai"
+      api_key = chat.user.account.openai_key or raise InvalidApiKeyError, "No OpenAI API key found. Please add your API key in your account settings."
+    when "openrouter"
+      api_key = chat.user.account.openrouter_key or raise InvalidApiKeyError, "No OpenRouter API key found. Please add your API key in your account settings."
+    else
+      raise "Invalid provider: #{generation.llm_model.provider}"
+    end
 
     puts "\n\n\n"
     puts "Starting OpenRouter chat completion for chat #{chat.id} with model #{generation.llm_model.model}"
-    service = OpenrouterService.new(api_key)
-    assistant_message = service.chat_completion(
+    service = OpenrouterService.new
+    response = service.chat_completion(
+      provider: generation.llm_model.provider,
+      api_key: api_key,
       model: generation.llm_model.model,
-      messages: chat.messages
+      messages: chat.messages,
+      search_enabled: generation.search_enabled,
+      reasoning_effort: generation.reasoning_effort,
     )
+    assistant_message = response[:body]
+    citations = response[:citations]
     puts "Successfully received response from OpenRouter"
     puts "\n\n\n"
 
@@ -33,11 +46,21 @@ class OpenrouterChatCompletionJob < ApplicationJob
     end
 
     Chat.transaction do
-      chat.messages.create!(
+      message = chat.messages.create!(
         value: assistant_message,
         llm_model: generation.llm_model,
         is_system: true,
       )
+
+      citations.each do |citation|
+        obj = citation[:url_citation]
+        puts "Citation: #{obj.inspect}"
+        message.citations.create!(
+          title: obj[:title],
+          url: obj[:url],
+        )
+      end
+
       chat.update!(generating: false)
       generation.destroy!
     end

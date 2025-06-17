@@ -20,7 +20,9 @@ class MessagesController < ApplicationController
         @chat.update!(generating: true)
         generation = @chat.generations.create!(
           llm_model: @message.llm_model,
-          content: ""
+          content: "",
+          search_enabled: @message.search_enabled,
+          reasoning_effort: @message.reasoning_enabled ? "medium" : "none"
         )
         OpenrouterChatCompletionJob.perform_later(generation)
         @message = @chat.messages.new

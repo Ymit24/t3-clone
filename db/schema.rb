@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_17_182003) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_17_220542) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "openrouter_key"
@@ -30,6 +30,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_182003) do
     t.index ["user_id"], name: "index_chats_on_user_id"
   end
 
+  create_table "citations", force: :cascade do |t|
+    t.string "title"
+    t.string "url"
+    t.integer "message_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id"], name: "index_citations_on_message_id"
+  end
+
   create_table "generations", force: :cascade do |t|
     t.integer "chat_id", null: false
     t.integer "llm_model_id", null: false
@@ -37,6 +46,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_182003) do
     t.boolean "canceled", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "search_enabled", default: false
+    t.string "reasoning_effort", default: "none"
     t.index ["chat_id"], name: "index_generations_on_chat_id"
     t.index ["llm_model_id"], name: "index_generations_on_llm_model_id"
   end
@@ -223,6 +234,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_182003) do
 
   add_foreign_key "accounts", "users"
   add_foreign_key "chats", "users"
+  add_foreign_key "citations", "messages"
   add_foreign_key "generations", "chats"
   add_foreign_key "generations", "llm_models"
   add_foreign_key "messages", "chats"

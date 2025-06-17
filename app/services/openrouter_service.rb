@@ -1,23 +1,29 @@
 class OpenrouterService
-  def initialize(api_key)
-    @api_key = api_key
-  end
 
-  def chat_completion(model:, messages:)
-    uri = URI("https://openrouter.ai/api/v1/chat/completions")
+  def chat_completion(provider:, api_key:, model:, messages:, search_enabled:, reasoning_effort:)
+    case provider
+    when "openai"
+      uri = URI("https://api.openai.com/v1/chat/completions")
+    when "openrouter"
+      uri = URI("https://openrouter.ai/api/v1/chat/completions")
+    else
+      raise "Invalid provider: #{provider}"
+    end
+
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     
     req = Net::HTTP::Post.new(uri.path, {
       "Content-Type" => "application/json",
-      "Authorization" => "Bearer #{@api_key}"
+      "Authorization" => "Bearer #{api_key}"
     })
 
     req.body = {
       model: model,
+      plugins: [{id: "web"}],
       messages: messages.map do |message|
         { role: message.is_system ? "assistant" : "user", content: message.value }
-      end
+      end,
     }.to_json
 
     begin
@@ -30,7 +36,12 @@ class OpenrouterService
 
       case res.code
       when "200"
-        response_body.dig(:choices, 0, :message, :content)
+        body = response_body.dig(:choices, 0, :message, :content)
+        citations = response_body.dig(:choices, 0, :message).fetch(:annotations, [])
+        {
+          body: body,
+          citations: citations,
+        }
       when "401"
         if response_body[:error]&.include?("Invalid API key")
           raise OpenrouterChatCompletionJob::InvalidApiKeyError, "Invalid API key"

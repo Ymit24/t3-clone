@@ -3,9 +3,9 @@
 # Table name: llm_models
 #
 #  id         :integer          not null, primary key
+#  model      :string           not null
 #  name       :string           not null
 #  provider   :string           not null
-#  model      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

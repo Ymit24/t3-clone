@@ -2,13 +2,15 @@
 #
 # Table name: generations
 #
-#  id           :integer          not null, primary key
-#  canceled     :boolean          default(FALSE)
-#  content      :text
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  chat_id      :integer          not null
-#  llm_model_id :integer          not null
+#  id               :integer          not null, primary key
+#  canceled         :boolean          default(FALSE)
+#  content          :text
+#  reasoning_effort :string           default("none")
+#  search_enabled   :boolean          default(FALSE)
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  chat_id          :integer          not null
+#  llm_model_id     :integer          not null
 #
 # Indexes
 #
