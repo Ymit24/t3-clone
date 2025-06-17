@@ -19,7 +19,7 @@ class Messages::RetryController < ApplicationController
       end
       messages.destroy_all
     end
-      OpenrouterChatCompletionJob.perform_later(generation)
+    OpenrouterChatCompletionJob.perform_later(generation)
 
     head :ok
   end
