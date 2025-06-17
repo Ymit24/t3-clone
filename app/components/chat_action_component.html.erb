@@ -1,10 +1,10 @@
 <% if @tag == :button %>
-  <%= button_to(@href, class: "cursor-pointer", **@other) do %>
-    <%= helpers.heroicon @icon, options: {class: "w-5 h-5 aspect-square text-text-secondary hover:#{@color} transition-colors duration-200"} %>
+  <%= button_to(@href, class: "cursor-pointer p-1 rounded-md hover:bg-sidebar transition-all duration-300", **@other) do %>
+    <%= helpers.heroicon @icon, options: {class: "w-5 h-5 aspect-square text-text-secondary"} %>
   <% end %>
 <% elsif @tag == :a %>
-  <%= link_to(@href, **@other) do %>
-    <%= helpers.heroicon @icon, options: {class: "w-5 h-5 aspect-square text-text-secondary hover:#{@color} transition-colors duration-200"} %>
+  <%= link_to(@href, class: "p-1 rounded-md hover:bg-sidebar", **@other) do %>
+    <%= helpers.heroicon @icon, options: {class: "w-5 h-5 aspect-square text-text-secondary"} %>
   <% end %>
 <% else %>
   <% raise "Invalid tag type, expected either :a or :button." %>
