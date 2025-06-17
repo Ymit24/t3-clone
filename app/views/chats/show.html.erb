@@ -3,6 +3,9 @@
 <%= turbo_stream_from [@chat, :loading_status] %>
 <%= turbo_stream_from [@chat, :send_button] %>
 <%= turbo_frame_tag "chat_area", class: "flex flex-1 flex-col items-center h-screen transition-all duration-300" do %>
+  <div class="absolute top-4 left-1/2 translate-x-1/2 z-50 rounded-md bg-black/40 px-3 py-1.5 text-xs font-medium text-white/80 backdrop-blur-sm">
+    Not the real t3.chat
+  </div>
   <section class="flex-1 overflow-y-auto w-full bg-chat-area p-4" data-scroll-target="container">
     <div id="messages" class="flex flex-col gap-2 my-4 w-full">
       <%= render partial: "messages/message", collection: @chat.messages.ordered.select(&:persisted?) %>
@@ -13,7 +16,7 @@
       <% end %>
     </div>
   </section>
-  <footer class="w-[70%]">
+  <footer class="w-full md:w-[70%]">
     <%= render partial: "messages/form", locals: { message: @chat.messages.new } %>
   </footer>
 <% end %>
