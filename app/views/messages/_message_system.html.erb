@@ -2,6 +2,15 @@
 <%= turbo_frame_tag dom_id(message), class: "self-start", id: dom_id(message) do %>
   <%= render ChatBubbleComponent.new(is_system: true) do |bubble| %>
     <%= bubble.with_body do %>
+      <% if message.reasoning_chunks.any? %>
+        <details <%= "open" if message.chat.generating && message.value.blank? %>>
+          <summary class="text-sm font-light text-gray-400">Reasoning</summary>
+          <div class="prose prose-invert max-w-none">
+            <%= markdown(message.reasoning_chunks.map(&:body).join("\n")) %>
+          </div>
+        </details>
+        <hr class="my-8 border-gray-700">
+      <% end %>
       <div class="prose prose-invert max-w-none">
         <%= markdown(message.value) %>
       </div>

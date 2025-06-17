@@ -26,8 +26,8 @@ class Message < ApplicationRecord
   belongs_to :llm_model, optional: true
   belongs_to :chat
   has_many :citations, dependent: :destroy
+  has_many :reasoning_chunks, dependent: :destroy
 
-  validates :value, presence: true
   validates :chat, presence: true
 
   scope :ordered, -> { order(created_at: :asc) }

@@ -18,21 +18,68 @@ class OpenrouterService
       "Authorization" => "Bearer #{api_key}"
     })
 
+    puts "[service] search_enabled: #{search_enabled}"
+    puts "[service] reasoning_effort: #{reasoning_effort}"
+
     req.body = {
       model: model,
-      plugins: [{id: "web"}],
+      plugins: search_enabled ? [{id: "web"}] : [],
+      reasoning: {
+        enabled: reasoning_effort != "none",
+      },
+      stream: true,
       messages: messages.map do |message|
         { role: message.is_system ? "assistant" : "user", content: message.value }
       end,
     }.to_json
 
     begin
-      res = http.request(req)
+      puts "[service] \n\n\n\n----------------------"
+      puts "[service] about to start request"
+      buffer = ""
+      res = http.request(req) do |response|
+        puts "[service] got response"
+        response.read_body do |chunk|
+          puts "[service] Chunk: '#{chunk}'"
+          buffer += chunk
+
+          begin
+            current = JSON.parse(buffer, symbolize_names: true)
+            if current.key?(:error)
+              raise OpenrouterChatCompletionJob::OpenRouterError, "Error: #{current[:error][:message]}"
+            end
+          rescue JSON::ParserError
+            # nothing
+          end
+
+          while (event, rest = buffer.split("\n\n", 2)).size == 2
+            buffer = rest
+
+            event.lines.each do |line|
+              puts "[service] Line: '#{line}'"
+              if line.include?("data:")
+                unless line.include?("[DONE]")
+                  data = JSON.parse(line.split("data:")[1].strip, symbolize_names: true)
+                  puts "[service] Data: '#{data.inspect}'"
+                  yield data
+                end
+              else
+                puts "[service] [DONE]"
+              end
+            end
+          end
+        end
+      end
+      puts "[service] +++++++++++++++++++++++++++\n\n\n"
+      return {body: "",citations: []}
+
+      raise "this should never happen"
+
       response_body = JSON.parse(res.body, symbolize_names: true)
 
-      puts "\n\n\n\n----------------------"
-      puts "RESPONSE:", JSON.pretty_generate(response_body)
-      puts "++++++++++++++++++++++++++\n\n\n"
+      puts "[service] \n\n\n\n----------------------"
+      puts "[service] RESPONSE:", JSON.pretty_generate(response_body)
+      puts "[service] +++++++++++++++++++++++++++\n\n\n"
 
       case res.code
       when "200"
@@ -71,12 +118,17 @@ class OpenrouterService
         raise OpenrouterChatCompletionJob::OpenRouterError, "Unexpected error occurred"
       end
     rescue JSON::ParserError
+      puts "JSON::ParserError: #{res.body}"
       raise OpenrouterChatCompletionJob::OpenRouterError, "Invalid response from server"
-    rescue Net::OpenTimeout, Net::ReadTimeout
+    rescue Net::OpenTimeout, Net::ReadTimeout 
+      puts "Net::OpenTimeout, Net::ReadTimeout: #{res.body}"
+      puts "Request: #{req.body}"
       raise OpenrouterChatCompletionJob::NetworkError, "Request timed out"
     rescue Errno::ECONNREFUSED, Errno::ECONNRESET
+      puts "Errno::ECONNREFUSED, Errno::ECONNRESET: #{res.body}"
       raise OpenrouterChatCompletionJob::NetworkError, "Connection failed"
     rescue SocketError
+      puts "SocketError: #{res.body}"
       raise OpenrouterChatCompletionJob::NetworkError, "Network connection error"
     end
   end

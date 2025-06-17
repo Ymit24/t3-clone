@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_17_220542) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_17_231358) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "openrouter_key"
@@ -71,6 +71,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_220542) do
     t.boolean "reasoning_enabled", default: false, null: false
     t.index ["chat_id"], name: "index_messages_on_chat_id"
     t.index ["llm_model_id"], name: "index_messages_on_llm_model_id"
+  end
+
+  create_table "reasoning_chunks", force: :cascade do |t|
+    t.string "body"
+    t.integer "message_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id"], name: "index_reasoning_chunks_on_message_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -239,6 +247,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_220542) do
   add_foreign_key "generations", "llm_models"
   add_foreign_key "messages", "chats"
   add_foreign_key "messages", "llm_models"
+  add_foreign_key "reasoning_chunks", "messages"
   add_foreign_key "sessions", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

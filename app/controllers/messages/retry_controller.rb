@@ -12,7 +12,9 @@ class Messages::RetryController < ApplicationController
       message.chat.update!(generating: true)
       generation = message.chat.generations.create!(
         llm_model: message.llm_model,
-        content: ""
+        content: "",
+        search_enabled: message.search_enabled,
+        reasoning_effort: message.reasoning_enabled ? "medium" : "none"
       )
       if message.is_system
         message.destroy!
