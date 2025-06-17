@@ -8,5 +8,7 @@ class ChatBubbleComponent < ViewComponent::Base
     button: lambda { |**args| ChatActionComponent.new(tag: :button, **args) }
   }
 
-  def initialize; end
+  def initialize(is_system: false)
+    @is_system = is_system
+  end
 end

@@ -6,13 +6,13 @@ module Chats
       generation = chat.generations.where(canceled: false).first
 
       raise "No generations to cancel!" unless generation
-      
+
       Chat.transaction do
         generation.update!(canceled: true)
         chat.update!(generating: false)
       end
 
-      head :ok
+            head :ok
     end
   end
-end 
+end

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html data-theme="dark">
-
-<head>
+  <head>
     <title>T3Clone</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,15 +17,15 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-
     <meta name="turbo-refresh-method" content="morph">
     <meta name="turbo-refresh-scroll" content="preserve">
-</head>
-
-<body class="text-text-primary bg-chat-area">
+    <style>
+      <%= RougeTheme.css.html_safe %>
+    </style>
+  </head>
+  <body class="text-text-primary bg-chat-area">
     <main class="flex flex-col md:flex-row md:items-center h-screen" data-controller="scroll toggle">
-        <%= yield %>
+      <%= yield %>
     </main>
-</body>
-
+  </body>
 </html>

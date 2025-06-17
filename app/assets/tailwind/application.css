@@ -1,38 +1,39 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 :root {
-  /* Backgrounds & Surfaces */
-  --sidebar-color: #e8eae3; /* Light Khaki */
-  --chat-area-color: #f8f7f2; /* Parchment */
-  --chat-message-color: #e8eae3; /* Light Khaki */
+  /* Backgrounds & Surfaces (Light Theme - Discord-like) */
+  --sidebar-color: #e3e5e8; /* Lighter Gray for more contrast */
+  --chat-area-color: #ffffff; /* White */
+  --chat-message-color: #e3e5e8; /* Lighter Gray */
   --chat-entry-color: #ffffff; /* White for input contrast */
 
-  /* Text */
-  --text-primary-color: #283618; /* Dark Olive */
-  --text-secondary-color: #6b705c; /* Muted Green-Gray */
+  /* Text (Light Theme - Discord-like) */
+  --text-primary-color: #23272a; /* Darker Discord Gray */
+  --text-secondary-color: #5c6066; /* More distinct muted gray */
 
-  /* Accents & Borders */
-  --primary-color: #588157; /* Vibrant Leaf Green */
-  --border-color: #cad2c5; /* Soft Green-Gray */
+  /* Accents & Borders (Light Theme - Discord-like) */
+  --primary-color: #5865f2; /* Discord Blurple */
+  --border-color: #d1d4d8; /* Slightly darker border */
 }
 
-/* Overrides for the dark theme */
+/* Overrides for the dark theme (Discord-like) */
 [data-theme="dark"] {
-  /* Backgrounds & Surfaces */
-  --sidebar-color: #2a4031; /* Dark Muted Green */
-  --chat-area-color: #1a2e21; /* Dark Forest Green */
-  --chat-message-color: #2a4031; /* Dark Muted Green */
-  --chat-entry-color: #1a2e21; /* Dark Forest Green */
+  /* Backgrounds & Surfaces (Dark Theme - Discord-like) */
+  --sidebar-color: #1e1f22; /* Darker Discord Gray */
+  --chat-area-color: #2b2d31; /* Discord Dark Gray */
+  --chat-message-color: #313338; /* Discord Even Darker Gray */
+  --chat-entry-color: #383a40; /* Discord Even Darker Gray, kept for input contrast */
 
-  /* Text */
-  --text-primary-color: #fefae0; /* Cornsilk Off-White */
-  --text-secondary-color: #bcc4b7; /* Light Muted Sage */
+  /* Text (Dark Theme - Discord-like) */
+  --text-primary-color: #f2f3f5; /* Discord White */
+  --text-secondary-color: #8e9297; /* Slightly darker light gray */
 
-  /* Accents & Borders */
-  --primary-color: #a3b18a; /* Soft Moss Green */
-  --border-color: #3a5a40; /* Mid-tone Green */
+  /* Accents & Borders (Dark Theme - Discord-like) */
+  --primary-color: #5865f2; /* Discord Blurple */
+  --border-color: #17181b; /* Even darker border */
 }
 
 /*
