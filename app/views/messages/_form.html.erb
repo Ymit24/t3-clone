@@ -11,7 +11,7 @@
               required: true,
               disabled: @chat.user.account.openrouter_key.blank?,
               data: { form_disable_target: "element" },
-              class: "flex-1 rounded-md resize-none border-0 bg-chat-entry p-2 text-base text-text-primary p1laceholder-text-secondary focus:border-primary focus:outline-none focus:ring-0 overflow-y-auto"%>
+              class: "flex-1 rounded-md resize-none border-0 bg-chat-entry p-2 text-base text-text-primary placeholder-text-secondary focus:border-primary focus:outline-none focus:ring-0 overflow-y-auto"%>
   <div id="send-button">
     <%= render "messages/send_button", chat: @chat %>
   </div>
