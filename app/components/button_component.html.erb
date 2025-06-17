@@ -2,27 +2,31 @@
 <% if link? %>
   <%# Render as a link if @path is provided %>
   <%= link_to @path, class: button_classes, data: combined_data, disabled: @disabled do %>
-    <% if render_icon? && @icon_position == :left %>
-      <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
-    <% end %>
-    <% if render_text? %>
-      <span><%= @text %></span>
-    <% end %>
-    <% if render_icon? && @icon_position == :right %>
-      <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
-  <% end %>
+    <span class="flex items-center gap-2">
+      <% if render_icon? && @icon_position == :left %>
+        <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
+      <% end %>
+      <% if render_text? %>
+        <span class="font-semibold tracking-tight"><%= @text %></span>
+      <% end %>
+      <% if render_icon? && @icon_position == :right %>
+        <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
+      <% end %>
+    </span>
   <% end %>
 <% else %>
   <%# Render as a button if @path is not provided %>
   <button type="<%= @type %>" class="<%= button_classes %>" data="<%= combined_data %>" <%= @disabled ? "disabled" : "" %>>
-    <% if render_icon? && @icon_position == :left %>
-      <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
-    <% end %>
-    <% if render_text? %>
-      <span><%= @text %></span>
-    <% end %>
-    <% if render_icon? && @icon_position == :right %>
-      <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
-    <% end %>
-  </button>
+    <span class="flex items-center gap-2">
+      <% if render_icon? && @icon_position == :left %>
+        <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
+      <% end %>
+      <% if render_text? %>
+        <span class="font-semibold tracking-tight"><%= @text %></span>
+<% end %>
+<% if render_icon? && @icon_position == :right %>
+  <%= helpers.heroicon @icon, options: { class: "w-5 h-5" } %>
+<% end %>
+</span>
+</button>
 <% end %>

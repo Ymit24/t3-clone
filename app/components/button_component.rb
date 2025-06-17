@@ -59,7 +59,7 @@ class ButtonComponent < ViewComponent::Base
     when :primary
       "bg-primary text-chat-area hover:bg-primary/90"
     when :secondary
-      "bg-transparent border border-border text-text-primary hover:bg-sidebar"
+      "bg-chat-entry border border-primary/40 text-primary shadow-sm hover:bg-primary/10 hover:border-primary focus:ring-2 focus:ring-primary"
     when :danger
       "bg-red-600 text-white hover:bg-red-700"
     else
