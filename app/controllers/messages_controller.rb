@@ -1,5 +1,20 @@
 class MessagesController < ApplicationController
-    before_action :set_chat
+    before_action :set_chat, only: %i[edit show create update destroy]
+
+    def show
+      raise "todo"
+    end
+
+    def edit
+    end
+
+    def update
+      raise "todo"
+    end
+
+    def destroy
+      raise "todo"
+    end
 
     def create
       @message = @chat.messages.new(message_params)

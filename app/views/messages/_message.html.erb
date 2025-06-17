@@ -1,6 +1,6 @@
 <%# locals: (message:) %>
 <% if message.is_system %>
-  <%= render SystemChatMessageComponent.new(id: dom_id(message), msg: message.value, llm_model: message.llm_model) %>
+  <%= render "messages/message_system", message: %>
 <% else %>
-  <%= render UserChatMessageComponent.new(id: dom_id(message), msg: message.value, llm_model: message.llm_model) %>
+  <%= render "messages/message_user", message: %>
 <% end %>

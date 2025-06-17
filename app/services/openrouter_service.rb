@@ -23,7 +23,11 @@ class OpenrouterService
     begin
       res = http.request(req)
       response_body = JSON.parse(res.body, symbolize_names: true)
-      
+
+      puts "\n\n\n\n----------------------"
+      puts "RESPONSE:", JSON.pretty_generate(response_body)
+      puts "++++++++++++++++++++++++++\n\n\n"
+
       case res.code
       when "200"
         response_body.dig(:choices, 0, :message, :content)

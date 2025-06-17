@@ -18,8 +18,8 @@ Rails.application.routes.draw do
   root "home#index"
 
   resources :chats, only: %i[new index show destroy] do
-    resources :messages, only: %i[create]
-    resource :cancel, only: [:create], controller: 'chats/cancel'
+    resources :messages, only: %i[new show edit create update destroy]
+    resource :cancel, only: [ :create ], controller: "chats/cancel"
   end
 
   if Rails.env.development?
