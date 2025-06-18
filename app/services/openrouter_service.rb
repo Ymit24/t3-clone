@@ -22,7 +22,7 @@ class OpenrouterService
     puts "[service] reasoning_effort: #{reasoning_effort}"
 
     req.body = {
-      model: model,
+      model: model + (reasoning_effort != "none" ? ":thinking" : ""),
       plugins: search_enabled ? [{id: "web"}] : [],
       reasoning: {
         enabled: reasoning_effort != "none",
