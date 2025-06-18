@@ -54,7 +54,7 @@ class OpenrouterService
                 unless line.include?("[DONE]")
                   data = JSON.parse(line.split("data:")[1].strip, symbolize_names: true)
                   puts "[openrouter-service] Data: '#{data.inspect}'"
-                  yield data
+                  return if (yield data) == :cancel
                 end
               else
                 puts "[openrouter-service] [DONE]"
@@ -64,52 +64,6 @@ class OpenrouterService
         end
       end
       puts "[openrouter-service] +++++++++++++++++++++++++++\n\n\n"
-      return {body: "",citations: []}
-
-      raise "this should never happen"
-
-      response_body = JSON.parse(res.body, symbolize_names: true)
-
-      puts "[openrouter-service] \n\n\n\n----------------------"
-      puts "[openrouter-service] RESPONSE:", JSON.pretty_generate(response_body)
-      puts "[openrouter-service] +++++++++++++++++++++++++++\n\n\n"
-
-      case res.code
-      when "200"
-        body = response_body.dig(:choices, 0, :message, :content)
-        citations = response_body.dig(:choices, 0, :message).fetch(:annotations, [])
-        {
-          body: body,
-          citations: citations,
-        }
-      when "401"
-        if response_body[:error]&.include?("Invalid API key")
-          raise OpenrouterChatCompletionJob::InvalidApiKeyError, "Invalid API key"
-        else
-          raise OpenrouterChatCompletionJob::OpenRouterError, "Authentication error"
-        end
-      when "429"
-        if response_body[:error]&.include?("rate limit")
-          raise OpenrouterChatCompletionJob::RateLimitError, "Rate limit exceeded"
-        else
-          raise OpenrouterChatCompletionJob::OpenRouterError, "Too many requests"
-        end
-      when "400"
-        error_message = response_body[:error]&.downcase || ""
-        if error_message.include?("model") || error_message.include?("not found")
-          raise OpenrouterChatCompletionJob::InvalidModelError, "Model not available"
-        elsif error_message.include?("token") || error_message.include?("length")
-          raise OpenrouterChatCompletionJob::OpenRouterError, "Message too long"
-        else
-          raise OpenrouterChatCompletionJob::OpenRouterError, "Invalid request"
-        end
-      when "503"
-        raise OpenrouterChatCompletionJob::OpenRouterError, "Service temporarily unavailable"
-      when "500"
-        raise OpenrouterChatCompletionJob::OpenRouterError, "Internal server error"
-      else
-        raise OpenrouterChatCompletionJob::OpenRouterError, "Unexpected error occurred"
-      end
     rescue JSON::ParserError
       puts "JSON::ParserError: #{res.body}"
       raise OpenrouterChatCompletionJob::OpenRouterError, "Invalid response from server"

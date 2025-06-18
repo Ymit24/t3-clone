@@ -60,7 +60,7 @@ class OpenaiService
                 unless line.include?("[DONE]")
                   data = JSON.parse(line.split("data:")[1].strip, symbolize_names: true)
                   puts "[openai-service] Data: '#{data.inspect}'"
-                  yield data
+                  return if (yield data) == :cancel
                 end
               else
                 puts "[openai-service] [DONE]"

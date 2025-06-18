@@ -49,6 +49,12 @@ class OpenrouterChatCompletionJob < ApplicationJob
         return
       end
 
+      puts "CANCELED?? #{generation.reload.inspect}"
+      if generation.reload.canceled?
+        puts "generation is canceled"
+        return :cancel
+      end
+
       chunk = chunk[:choices].first
       puts "Choice: #{chunk.inspect}"
 

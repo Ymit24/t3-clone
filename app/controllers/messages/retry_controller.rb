@@ -8,10 +8,10 @@ class Messages::RetryController < ApplicationController
     messages = message.chat.messages.after_message(message)
 
     generation = message.generation
-      puts "generation: #{generation.inspect}"
+    puts "generation: #{generation.inspect}"
     Message.transaction do
       message.chat.update!(generating: true)
-      generation.update!(completed: false, content: "")
+      generation.update!(completed: false, canceled: false, content: "")
       if message.is_system
         message.destroy!
       end

@@ -24,6 +24,7 @@ class MessagesController < ApplicationController
           search_enabled: @chat.prompt.searching && @chat.prompt.llm_model.can_search,
           reasoning_effort: @chat.prompt.reasoning && @chat.prompt.llm_model.can_reason ? "medium" : "none"
         )
+        puts "CREATED GENERATION: #{generation.inspect}"
         @message.update!(generation: generation)
         OpenrouterChatCompletionJob.perform_later(generation)
         @message = @chat.messages.new

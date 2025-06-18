@@ -1,16 +1,15 @@
 <% if chat.generating %>
-<%= link_to chat_cancel_path(chat), 
+  <%= link_to chat_cancel_path(chat), 
           data: { turbo_method: :post },
-          disabled: chat.user.account.openrouter_key.blank?,
           class: "inline-flex items-center justify-center rounded-md p-2 text-text-primary hover:bg-chat-area transition-colors duration-200" do %>
-<%= heroicon "stop", options: { class: "h-5 w-5" } %>
-<% end %>
+    <%= heroicon "stop", options: { class: "h-5 w-5" } %>
+  <% end %>
 <% else %>
-<%= render ButtonComponent.new(
+  <%= render ButtonComponent.new(
         icon: "paper-airplane", 
         type: :submit, 
         variant: :primary,
-        disabled: chat.user.account.openrouter_key.blank?,
+        disabled: !chat.user.account.has_api_key?,
         data: { 
           form_disable_target: "element",
           action: "form-disable#disable"
