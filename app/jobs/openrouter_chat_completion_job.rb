@@ -61,19 +61,19 @@ class OpenrouterChatCompletionJob < ApplicationJob
           url = url[:url]
           unless message.citations.where(title: title, url: url).exists?
             puts "\n\t\t\t[JOB] Creating citation: #{title} #{url}\n"
-            citation =message.citations.create!(title: title, url: url)
+            citation = message.citations.create!(title: title, url: url)
             puts "\n\t\t\t[JOB] Citation created: #{citation.inspect}\n"
           end
         end
       end
 
       reasoning = chunk[:delta][:reasoning]
-      if reasoning
+      if reasoning && reasoning.present?
         message.reasoning_chunks.create!(body: reasoning)
       end
 
       content = chunk[:delta][:content]
-      if content
+      if content && content.present?
         message.update!(body: message.body + content)
       end
     end
