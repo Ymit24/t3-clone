@@ -2,25 +2,23 @@
 #
 # Table name: messages
 #
-#  id                :integer          not null, primary key
-#  is_system         :boolean          default(FALSE)
-#  reasoning_enabled :boolean          default(FALSE), not null
-#  search_enabled    :boolean          default(FALSE), not null
-#  value             :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  chat_id           :integer          not null
-#  llm_model_id      :integer          not null
+#  id            :integer          not null, primary key
+#  body          :string
+#  is_system     :boolean          default(FALSE)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  chat_id       :integer          not null
+#  generation_id :integer
 #
 # Indexes
 #
-#  index_messages_on_chat_id       (chat_id)
-#  index_messages_on_llm_model_id  (llm_model_id)
+#  index_messages_on_chat_id        (chat_id)
+#  index_messages_on_generation_id  (generation_id)
 #
 # Foreign Keys
 #
-#  chat_id       (chat_id => chats.id)
-#  llm_model_id  (llm_model_id => llm_models.id)
+#  chat_id        (chat_id => chats.id)
+#  generation_id  (generation_id => generations.id)
 #
 
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

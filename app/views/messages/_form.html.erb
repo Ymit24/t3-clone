@@ -1,30 +1,17 @@
-<%= form_with(model: [@chat, message], id: dom_id(message), class: "flex flex-col justify-between w-full max-h-50 rounded-tl-md rounded-tr-md border-l border-t border-r border-border transition-all duration-100 ease-in-out px-4 pb-4 pt-2 bg-sidebar", data: { controller: "form-disable prompt" }) do |form| %>
-  <div class="h-2 flex-1 py-2 flex flex-row items-center gap-2 justify-start transition-all duration-100">
-    <%= form.select :llm_model_id,
-                    options_from_collection_for_select(LlmModel.all, :id, :name),
-                    {},
-                    {
-                      class: "bg-chat-entry rounded-md text-text-primary text-sm border-border border focus:ring-0 focus:outline-none appearance-none pr-8 py-2 pl-2 cursor-pointer transition-colors duration-150 hover:bg-sidebar hover:border-primary",
-                    } %>
-    <div class="flex items-center gap-2">
-      <%= render ToggleComponent.new(form: form, attribute: :search_enabled, icon: "globe-alt", label: "Search", initial_checked: message.search_enabled) %>
-      <%= render ToggleComponent.new(form: form, attribute: :reasoning_enabled, icon: "sparkles", label: "Think", initial_checked: message.reasoning_enabled) %>
-    </div>
-  </div>
-  <div class="flex flex-row items-center justify-between gap-4">
-    <%= form.text_area :value,
+<%= form_with(model: [@chat, message], id: dom_id(message), class: "flex flex-row items-center justify-between gap-4", data: { controller: "form-disable prompt" }) do |form| %>
+  <%= form.text_area :body,
+  {
                 autocomplete: "off",
-                placeholder: @chat.user.account.openrouter_key.blank? ?  "Add your open router key to chat" : "Prompt...",
+                placeholder: @chat.user.account.has_api_key? ? "Prompt..." : "Add your API key to chat",
                 required: true,
                 rows: 1,
-                disabled: @chat.user.account.openrouter_key.blank?,
                 data: { form_disable_target: "element", action: "keydown->prompt#keydown input->prompt#resize" },
                 class: "
                   flex-1 max-h-32 rounded-md resize-none border border-border bg-chat-entry p-2 text-base transition-all duration-200 text-text-primary placeholder-text-secondary focus:border-primary focus:outline-none focus:ring-0 overflow-y-auto
                   transition-colors duration-150 hover:bg-sidebar hover:border-primary
-                "%>
-    <div id="send-button">
-      <%= render "messages/send_button", chat: @chat %>
-    </div>
+                "}.merge(disabled: !@chat.user.account.has_api_key?)
+                %>
+  <div id="send-button">
+    <%= render "messages/send_button", chat: @chat %>
   </div>
 <% end %>

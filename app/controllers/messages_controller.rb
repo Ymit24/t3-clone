@@ -19,11 +19,12 @@ class MessagesController < ApplicationController
       if @message.save
         @chat.update!(generating: true)
         generation = @chat.generations.create!(
-          llm_model: @message.llm_model,
+          llm_model: @chat.prompt.llm_model,
           content: "",
-          search_enabled: @message.search_enabled,
-          reasoning_effort: @message.reasoning_enabled ? "medium" : "none"
+          search_enabled: @chat.prompt.searching && @chat.prompt.llm_model.can_search,
+          reasoning_effort: @chat.prompt.reasoning && @chat.prompt.llm_model.can_reason ? "medium" : "none"
         )
+        @message.update!(generation: generation)
         OpenrouterChatCompletionJob.perform_later(generation)
         @message = @chat.messages.new
       end
@@ -43,6 +44,6 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-        params.require(:message).permit(:value, :llm_model_id, :search_enabled, :reasoning_enabled)
+        params.require(:message).permit(:body)
     end
 end

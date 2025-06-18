@@ -17,7 +17,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
+  resources :llm_models, only: %i[index] do
+    resources :capabilities, only: %i[index]
+  end
+
   resources :chats, only: %i[new index show destroy] do
+    resources :prompts, only: %i[edit update], controller: "chats/prompts"
     resources :messages, only: %i[new show edit create update] do
       resource :retry, only: [ :create ], controller: "messages/retry"
     end

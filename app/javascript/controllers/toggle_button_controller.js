@@ -9,5 +9,6 @@ export default class extends Controller {
   toggle() {
     this.checkboxTarget.checked = !this.checkboxTarget.checked;
     this.element.dataset.checked = this.checkboxTarget.checked;
+    console.log("toggle-----");
   }
 }

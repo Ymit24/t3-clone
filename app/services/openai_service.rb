@@ -19,7 +19,7 @@ class OpenaiService
       messages: [
         {role: "system", content: "always wrap code blocks in markdown backticks"},
         *messages.map do |message|
-          { role: message.is_system ? "assistant" : "user", content: message.value }
+          { role: message.is_system ? "assistant" : "user", content: message.body }
         end,
       ],
     }

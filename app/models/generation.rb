@@ -4,6 +4,7 @@
 #
 #  id               :integer          not null, primary key
 #  canceled         :boolean          default(FALSE)
+#  completed        :boolean          default(FALSE)
 #  content          :text
 #  reasoning_effort :string           default("none")
 #  search_enabled   :boolean          default(FALSE)
@@ -26,6 +27,8 @@
 class Generation < ApplicationRecord
   belongs_to :chat
   belongs_to :llm_model
+
+  has_many :messages, dependent: :destroy
 
   validates :chat, presence: true
   validates :llm_model, presence: true

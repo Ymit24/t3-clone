@@ -1,0 +1,2 @@
+module Chats::PromptsHelper
+end

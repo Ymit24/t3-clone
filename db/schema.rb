@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_18_005322) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_18_015243) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "openrouter_key"
@@ -49,6 +49,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_005322) do
     t.datetime "updated_at", null: false
     t.boolean "search_enabled", default: false
     t.string "reasoning_effort", default: "none"
+    t.boolean "completed", default: false
     t.index ["chat_id"], name: "index_generations_on_chat_id"
     t.index ["llm_model_id"], name: "index_generations_on_llm_model_id"
   end
@@ -59,19 +60,31 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_005322) do
     t.string "model", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "can_search", default: false
+    t.boolean "can_reason", default: false
   end
 
   create_table "messages", force: :cascade do |t|
-    t.string "value"
-    t.integer "llm_model_id", null: false
+    t.string "body"
     t.boolean "is_system", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "chat_id", null: false
-    t.boolean "search_enabled", default: false, null: false
-    t.boolean "reasoning_enabled", default: false, null: false
+    t.integer "generation_id"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
-    t.index ["llm_model_id"], name: "index_messages_on_llm_model_id"
+    t.index ["generation_id"], name: "index_messages_on_generation_id"
+  end
+
+  create_table "prompts", force: :cascade do |t|
+    t.integer "chat_id", null: false
+    t.string "body"
+    t.integer "llm_model_id", null: false
+    t.boolean "searching"
+    t.boolean "reasoning"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_prompts_on_chat_id"
+    t.index ["llm_model_id"], name: "index_prompts_on_llm_model_id"
   end
 
   create_table "reasoning_chunks", force: :cascade do |t|
@@ -247,7 +260,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_18_005322) do
   add_foreign_key "generations", "chats"
   add_foreign_key "generations", "llm_models"
   add_foreign_key "messages", "chats"
-  add_foreign_key "messages", "llm_models"
+  add_foreign_key "messages", "generations"
+  add_foreign_key "prompts", "chats"
+  add_foreign_key "prompts", "llm_models"
   add_foreign_key "reasoning_chunks", "messages"
   add_foreign_key "sessions", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

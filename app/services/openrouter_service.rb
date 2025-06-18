@@ -22,7 +22,7 @@ class OpenrouterService
       },
       stream: true,
       messages: messages.map do |message|
-        { role: message.is_system ? "assistant" : "user", content: message.value }
+        { role: message.is_system ? "assistant" : "user", content: message.body }
       end,
     }.to_json
 

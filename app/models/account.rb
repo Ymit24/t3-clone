@@ -24,4 +24,8 @@ class Account < ApplicationRecord
   belongs_to :user
 
   validates :nickname, length: { maximum: 9 }
+
+  def has_api_key?
+    openrouter_key.present? || openai_key.present?
+  end
 end

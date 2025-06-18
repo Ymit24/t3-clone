@@ -1,0 +1,20 @@
+<%# locals: (prompt:) %>
+<%= form_with(model: [prompt.chat, prompt], id: dom_id(prompt), class: "h-2 flex-1 py-2 flex flex-row items-center gap-2 justify-start transition-all duration-100", data: { controller: "form-disable prompt", prompt_target: "form" }) do |form| %>
+  <%= form.submit "Save", formaction: chat_prompt_path(prompt.chat), class: "hidden" %>
+  <%= form.select :llm_model_id,
+                    options_from_collection_for_select(LlmModel.all, :id, :name, prompt.llm_model.id),
+                    {},
+                    {
+                      class: "bg-chat-entry rounded-md text-text-primary text-sm border-border border focus:ring-0 focus:outline-none appearance-none pr-8 py-2 pl-2 cursor-pointer transition-colors duration-150 hover:bg-sidebar hover:border-primary",
+                      autocomplete: "off",
+                      data: { action: "prompt#submit" }
+                    } %>
+  <div class="flex items-center gap-2">
+    <% if prompt.llm_model.can_search %>
+      <%= render ToggleComponent.new(form: form, attribute: :search_enabled, icon: "globe-alt", label: "Search", initial_checked: prompt.searching) %>
+    <% end %>
+    <% if prompt.llm_model.can_reason %>
+      <%= render ToggleComponent.new(form: form, attribute: :reasoning_enabled, icon: "sparkles", label: "Think", initial_checked: prompt.reasoning) %>
+    <% end %>
+  </div>
+<% end %>

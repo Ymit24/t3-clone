@@ -26,12 +26,12 @@ class OpenrouterChatCompletionJob < ApplicationJob
     end
 
     puts "\n\n\n"
-    puts "Starting OpenRouter chat completion for chat #{chat.id} with model #{generation.llm_model.model}"
+    puts "Starting #{generation.llm_model.provider} chat completion for chat #{chat.id} with model #{generation.llm_model.model}"
 
     message = chat.messages.create!(
-      value: "",
-      llm_model: generation.llm_model,
+      body: "",
       is_system: true,
+      generation: generation,
     )
 
     puts "about to start chat completion"
@@ -43,16 +43,14 @@ class OpenrouterChatCompletionJob < ApplicationJob
       reasoning_effort: generation.reasoning_effort,
     ) do |chunk|
       puts "Chunk: #{chunk}"
-      # message.update!(value: "thinking... chunk: #{chunk.inspect}")
       if chunk.key?(:error)
         puts "found error"
-        message.update!(value: message.value + "Error: #{chunk[:error][:message]}")
+        message.update!(body: message.body + "Error: #{chunk[:error][:message]}")
         return
       end
 
       chunk = chunk[:choices].first
       puts "Choice: #{chunk.inspect}"
-
 
       annotations = chunk[:delta][:annotations]
       annotations&.each do |annotation|
@@ -76,7 +74,7 @@ class OpenrouterChatCompletionJob < ApplicationJob
 
       content = chunk[:delta][:content]
       if content
-        message.update!(value: message.value + content)
+        message.update!(body: message.body + content)
       end
     end
 
@@ -87,27 +85,9 @@ class OpenrouterChatCompletionJob < ApplicationJob
 
     # Check if generation was canceled while we were waiting for the response
     puts "\n\n\n\n----------------\nis canceled: #{generation.reload.inspect}\n+++++++++++++\n\n\n\n\n"
-    if generation.reload.canceled?
-      Chat.transaction do
-        generation.destroy!
-        chat.update!(generating: false)
-      end
-      return
-    end
-
-    Chat.transaction do
-      # citations.each do |citation|
-      #   obj = citation[:url_citation]
-      #   puts "Citation: #{obj.inspect}"
-      #   message.citations.create!(
-      #     title: obj[:title],
-      #     url: obj[:url],
-      #   )
-      # end
-
-      chat.update!(generating: false)
-      generation.destroy!
-    end
+    puts "messages: #{generation.messages.inspect}"
+    generation.update!(completed: true)
+    chat.update!(generating: false)
   rescue => e
     puts "Unexpected error occurred: #{e.message}"
     handle_error(generation, "An unexpected error occurred. Please try again later.")
@@ -119,11 +99,12 @@ class OpenrouterChatCompletionJob < ApplicationJob
     puts "Error occurred: #{message}"
 
     puts "\n\n\n\n----------------\nis canceled: #{generation.reload.inspect}\n+++++++++++++\n\n\n\n\n"
+    puts "messages: #{generation.messages.inspect}"
     Chat.transaction do
       chat = generation.chat
-      chat.messages.last.update!(value: chat.messages.last.value + message)
+      chat.messages.last.update!(body: chat.messages.last.body + message)
       chat.update!(generating: false)
-      generation.destroy!
+      generation.update!(completed: true)
     end
   end
 end

@@ -7,20 +7,19 @@ class Messages::RetryController < ApplicationController
     end
     messages = message.chat.messages.after_message(message)
 
-    generation = nil
+    generation = message.generation
+      puts "generation: #{generation.inspect}"
     Message.transaction do
       message.chat.update!(generating: true)
-      generation = message.chat.generations.create!(
-        llm_model: message.llm_model,
-        content: "",
-        search_enabled: message.search_enabled,
-        reasoning_effort: message.reasoning_enabled ? "medium" : "none"
-      )
+      generation.update!(completed: false, content: "")
       if message.is_system
         message.destroy!
       end
       messages.destroy_all
     end
+    puts "\n\n\n\n\n\n\n\n\nabout to generate retry"
+    puts "generation: #{generation.inspect}"
+    puts "\n\n\n\n\n\n\n\n\n"
     OpenrouterChatCompletionJob.perform_later(generation)
 
     head :ok

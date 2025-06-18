@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@prompt) do %>
+  <%= render partial: "chats/prompts/form", locals: { prompt: @prompt } %>
+<% end %>

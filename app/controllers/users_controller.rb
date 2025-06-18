@@ -12,7 +12,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params.require(:user).permit(:email_address, :password).merge(account_attributes: { openrouter_key: nil }))
     if @user.save
-      redirect_to new_session_url
+      start_new_session_for @user
+      redirect_to after_authentication_url
     else
       render :new, status: :unprocessable_entity
     end

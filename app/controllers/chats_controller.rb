@@ -4,7 +4,11 @@ class ChatsController < ApplicationController
   end
 
   def new
-    chat = Current.user.chats.create!(title: "Untitled Chat #{Current.user.chats.count+1}")
+    chat = nil
+    Chat.transaction do
+      chat = Current.user.chats.create!(title: "Untitled Chat #{Current.user.chats.count+1}")
+      chat.prompt = Prompt.create!(chat: chat, llm_model: LlmModel.first)
+    end
     redirect_to chat_path(chat)
   end
 

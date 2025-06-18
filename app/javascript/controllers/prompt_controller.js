@@ -2,6 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="prompt"
 export default class extends Controller {
+  static targets = ["form"];
+
   connect() {
   }
 
@@ -11,6 +13,11 @@ export default class extends Controller {
       e.currentTarget.form.requestSubmit();
       return;
     }
+  }
+
+  submit() {
+    console.log("submit-----");
+    this.formTarget.requestSubmit();
   }
 
   resize(e) {

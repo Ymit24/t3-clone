@@ -3,7 +3,7 @@
   <%= render ChatBubbleComponent.new(is_system: true) do |bubble| %>
     <%= bubble.with_body do %>
       <% if message.reasoning_chunks.any? %>
-        <details <%= "open" if message.chat.generating && message.value.blank? %>>
+        <details <%= "open" if message.chat.generating && message.body.blank? %>>
           <summary class="text-sm font-light text-gray-400">Reasoning</summary>
           <div class="prose prose-invert max-w-none">
             <%= markdown(message.reasoning_chunks.map(&:body).join("\n")) %>
@@ -12,12 +12,12 @@
         <hr class="my-8 border-gray-700">
       <% end %>
       <div class="prose prose-invert max-w-none">
-        <%= markdown(message.value) %>
+        <%= markdown(message.body) %>
       </div>
     <% end %>
     <%= bubble.with_info do %>
       <div class="flex flex-col gap-2">
-        <span class="font-thin text-xs"><%= message.llm_model.model %></span>
+        <span class="font-thin text-xs"><%= message.generation.llm_model.model %></span>
         <% unless message.citations.empty? %>
           <h6 class="text-xs font-light text-gray-400">Citations</h6>
           <div class="flex flex-row gap-4">
