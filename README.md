@@ -1,6 +1,7 @@
 # T3Clone
 This project is an entry into the t3.chat cloneathon competition. Below are some details about the project. 
 
+DISCLAIMER: As this is a cloneathon submission there are a lot of failing tests, loose code, debug prints, and other wonderful little timebombs throughout the codebase :)
 
 ## Features
 - **User authentication**: Email+password user authentication and basic authorization. No mailer is setup so features like email verification and forgot password aren't fully implemented.
