@@ -1,7 +1,7 @@
-class OpenrouterService
+class OpenaiService
 
-  def chat_completion(api_key:, model:, messages:, search_enabled:, reasoning_effort:, **_other)
-    uri = URI("https://openrouter.ai/api/v1/chat/completions")
+  def chat_completion(api_key:, model:, messages:, reasoning_effort:, **_other)
+    uri = URI("https://api.openai.com/v1/chat/completions")
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
@@ -11,29 +11,35 @@ class OpenrouterService
       "Authorization" => "Bearer #{api_key}"
     })
 
-    puts "[openrouter-service] search_enabled: #{search_enabled}"
-    puts "[openrouter-service] reasoning_effort: #{reasoning_effort}"
+    puts "[openai-service] reasoning_effort: #{reasoning_effort}"
 
-    req.body = {
-      model: model + (reasoning_effort != "none" ? ":thinking" : ""),
-      plugins: search_enabled ? [{id: "web"}] : [],
-      reasoning: {
-        enabled: reasoning_effort != "none",
-      },
+    body = {
+      model: model,
       stream: true,
-      messages: messages.map do |message|
-        { role: message.is_system ? "assistant" : "user", content: message.value }
-      end,
-    }.to_json
+      messages: [
+        {role: "system", content: "always wrap code blocks in markdown backticks"},
+        *messages.map do |message|
+          { role: message.is_system ? "assistant" : "user", content: message.value }
+        end,
+      ],
+    }
+
+    if reasoning_effort != "none"
+      body[:reasoning_effort] = reasoning_effort
+    end
+
+    req.body = body.to_json
+
+    puts "[openai-service] body: #{body.inspect}"
 
     begin
-      puts "[openrouter-service] \n\n\n\n----------------------"
-      puts "[openrouter-service] about to start request"
+      puts "[openai-service] \n\n\n\n----------------------"
+      puts "[openai-service] about to start request"
       buffer = ""
       res = http.request(req) do |response|
-        puts "[openrouter-service] got response"
+        puts "[openai-service] got response"
         response.read_body do |chunk|
-          puts "[openrouter-service] Chunk: '#{chunk}'"
+          puts "[openai-service] Chunk: '#{chunk}'"
           buffer += chunk
 
           begin
@@ -49,30 +55,30 @@ class OpenrouterService
             buffer = rest
 
             event.lines.each do |line|
-              puts "[openrouter-service] Line: '#{line}'"
+              puts "[openai-service] Line: '#{line}'"
               if line.include?("data:")
                 unless line.include?("[DONE]")
                   data = JSON.parse(line.split("data:")[1].strip, symbolize_names: true)
-                  puts "[openrouter-service] Data: '#{data.inspect}'"
+                  puts "[openai-service] Data: '#{data.inspect}'"
                   yield data
                 end
               else
-                puts "[openrouter-service] [DONE]"
+                puts "[openai-service] [DONE]"
               end
             end
           end
         end
       end
-      puts "[openrouter-service] +++++++++++++++++++++++++++\n\n\n"
+      puts "[openai-service] +++++++++++++++++++++++++++\n\n\n"
       return {body: "",citations: []}
 
       raise "this should never happen"
 
       response_body = JSON.parse(res.body, symbolize_names: true)
 
-      puts "[openrouter-service] \n\n\n\n----------------------"
-      puts "[openrouter-service] RESPONSE:", JSON.pretty_generate(response_body)
-      puts "[openrouter-service] +++++++++++++++++++++++++++\n\n\n"
+      puts "[openai-service] \n\n\n\n----------------------"
+      puts "[openai-service] RESPONSE:", JSON.pretty_generate(response_body)
+      puts "[openai-service] +++++++++++++++++++++++++++\n\n\n"
 
       case res.code
       when "200"

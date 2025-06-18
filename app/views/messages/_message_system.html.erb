@@ -18,12 +18,14 @@
     <%= bubble.with_info do %>
       <div class="flex flex-col gap-2">
         <span class="font-thin text-xs"><%= message.llm_model.model %></span>
-        <h6 class="text-xs font-light text-gray-400">Citations</h6>
-        <div class="flex flex-row gap-4">
-          <% message.citations.each do |citation| %>
-            <%= link_to citation.title, citation.url, class: "font-light text-xs text-blue-500 bg-blue-500/10 px-2 py-1 rounded-full border border-blue-500/20 hover:bg-blue-500/20" %>
-          <% end %>
-        </div>
+        <% unless message.citations.empty? %>
+          <h6 class="text-xs font-light text-gray-400">Citations</h6>
+          <div class="flex flex-row gap-4">
+            <% message.citations.each do |citation| %>
+              <%= link_to citation.title, citation.url, class: "font-light text-xs text-blue-500 bg-blue-500/10 px-2 py-1 rounded-full border border-blue-500/20 hover:bg-blue-500/20" %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     <% end %>
     <%= bubble.with_action_button(href: chat_message_retry_path(message.chat, message), icon: "arrow-path") %>

@@ -13,10 +13,13 @@ class OpenrouterChatCompletionJob < ApplicationJob
 
   def perform(generation)
     chat = generation.chat
+
     case generation.llm_model.provider
     when "openai"
+      service = OpenaiService.new
       api_key = chat.user.account.openai_key or raise InvalidApiKeyError, "No OpenAI API key found. Please add your API key in your account settings."
     when "openrouter"
+      service = OpenrouterService.new
       api_key = chat.user.account.openrouter_key or raise InvalidApiKeyError, "No OpenRouter API key found. Please add your API key in your account settings."
     else
       raise "Invalid provider: #{generation.llm_model.provider}"
@@ -31,10 +34,8 @@ class OpenrouterChatCompletionJob < ApplicationJob
       is_system: true,
     )
 
-    service = OpenrouterService.new
     puts "about to start chat completion"
     service.chat_completion(
-      provider: generation.llm_model.provider,
       api_key: api_key,
       model: generation.llm_model.model,
       messages: chat.messages,

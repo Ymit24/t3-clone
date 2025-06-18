@@ -4,6 +4,7 @@
 #
 #  id             :integer          not null, primary key
 #  nickname       :string(9)
+#  openai_key     :string
 #  openrouter_key :string
 #  role           :string           default("Guest"), not null
 #  created_at     :datetime         not null

@@ -21,6 +21,14 @@
           <div class="text-red-600 text-xs mt-1"><%= @account.errors[:nickname].join(", ") %></div>
         <% end %>
       </div>
+      <!-- OpenAI Key Field -->
+      <div class="space-y-2">
+        <%= form.label :openai_key, "OpenAI Key", class: "block text-sm font-medium text-text-primary" %>
+        <%= form.text_field :openai_key, type: :password, placeholder: "Enter your OpenAI key", class: "w-full p-2 border border-border rounded-md bg-chat-entry text-text-primary placeholder-text-secondary focus:ring-primary focus:border-primary" %>
+        <% if @account.errors[:openai_key].any? %>
+          <div class="text-red-600 text-xs mt-1"><%= @account.errors[:openai_key].join(", ") %></div>
+        <% end %>
+      </div>
       <!-- Openrouter Key Field -->
       <div class="space-y-2">
         <%= form.label :openrouter_key, "Openrouter Key", class: "block text-sm font-medium text-text-primary" %>

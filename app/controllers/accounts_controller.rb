@@ -23,7 +23,7 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    params.require(:account).permit(:openrouter_key, :nickname).to_h
+    params.require(:account).permit(:openrouter_key, :openai_key, :nickname).to_h
   end
 
   def set_account

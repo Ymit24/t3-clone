@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_17_231358) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_18_005322) do
   create_table "accounts", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "openrouter_key"
@@ -18,6 +18,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_231358) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "role", default: "Guest", null: false
+    t.string "openai_key"
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
