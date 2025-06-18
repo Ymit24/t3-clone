@@ -21,4 +21,21 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
+*
+
+run locally
+
+** Build **
+
+```bash
+$ docker build -t rails-dev -f Dockerfile-dev .
+```
+
+** Run **
+
+```bash
+$ docker run -it \
+  -p 3000:3000 \
+  -v "$(pwd)":/rails \
+  rails-dev bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0 -p 3000"
+```
