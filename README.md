@@ -1,26 +1,27 @@
 # T3Clone
+This project is an entry into the t3.chat cloneathon competition. Below are some details about the project. 
 
-T3Clone is a modern, full-stack Ruby on Rails 8 application designed as a template for building robust, scalable, and maintainable web apps. It leverages Hotwire (Turbo & Stimulus), Tailwind CSS, and a modular component architecture. The project is containerized for both development and production, and supports rapid iteration, automated testing, and cloud deployment.
 
 ## Features
-- **Rails 8**: Latest Rails features and conventions
-- **Hotwire**: Turbo & Stimulus for SPA-like interactivity
-- **Tailwind CSS**: Utility-first styling
-- **Component-driven UI**: ViewComponent & Lookbook previews
-- **Job Queues**: Solid Queue, Mission Control Jobs
-- **API & Web**: RESTful endpoints, session management, user accounts
-- **PWA-ready**: Manifest and service worker support
-- **Dockerized**: For both local development and production
-- **Automated Testing**: Minitest, Guard, fixtures, and system tests
+- **User authentication**: Email+password user authentication and basic authorization. No mailer is setup so features like email verification and forgot password aren't fully implemented.
+- **Openrouter and OpenAI Providers**: The backend can call both openrouter and openai for generations. There are some limitations such as reasoning sumarries not implemented for OpenAI.
+- **Streaming Responses**: All llm responses are streamed to your browser-- and any other browser tab, or device viewing the chat.
+- **Resumable Generations**: You can switch chats, leave your tab, close your browser, throw your phone into the ocean and go get a brand new one, and your generations will keep going until they finish or YOU cancel them!
+- **Multiple Concurrent Generations**: Have multiple chats generating at the same time on the same account, either through one tab, multiple tabs, or multiple devices, you can chat at the speed you can submit messages!
+- **Cancelable Streams**: for both simple, search, and reasoning responses, you can cancel the request and avoid being billed for some 2 minute generation if you forgot a crucial detail in your prompt!
+- **Basic Editing**: You can edit messages you already submitted as needed. You can't change the generation settings however, I ran out of time to build that feature :-).
+- **Retry**: You can regenerate your last message-- or any earlier one-- and the same generation settings will be used. If you retry an earlier message, your later messages will be deleted.
+- **Markdown Rendering**: All messages are rendered via markdown rendering to give the best experience. Code blocks also have syntax highlighting. Some models aren't as great at sticking to the markdown format in their responses so you may need to ask them to reformat their last response.
+- **Copy code to clipboard**: All code blocks have a copy to clipboard button. This is a huge quality of life feature.
+- **Somewhat functional mobile support**: There are some imperfections but most features are mobile-compatible (not quite mobile friendly per-say)
 
 ## Technology Stack
 - **Ruby**: 3.3.5
 - **Rails**: ~> 8.0.2
-- **Database**: SQLite (default, easy to swap for PostgreSQL)
+- **Database**: SQLite (shockingly good)
 - **Frontend**: Hotwire (Turbo, Stimulus), Tailwind CSS
 - **Containerization**: Docker
-- **Job/Cache**: Solid Queue, Solid Cache, Mission Control Jobs
-- **Component Previews**: Lookbook
+- **Job/Cache**: Solid Queue, Solid Cache, Solid Cable, Mission Control Jobs
 
 ## Prerequisites
 - [Docker](https://www.docker.com/) (recommended for all environments)
@@ -28,9 +29,13 @@ T3Clone is a modern, full-stack Ruby on Rails 8 application designed as a templa
 
 ## Getting Started
 
+### 0. Try it out live!
+Currently, this project is deployed at [christiansmith.live](https://christiansmith.live). Feel free to try it out without having to install anything locally!
+NOTE: Please assume anything you put into the deployed instance is public information-- including your keys!! I have some basic security in place but that was a very low priority for this cloneathon so assume all your chats and keys are being read by someone. Provision an API key just for this tool and SET A BUDGET, to avoid someone spending on your key!
+
 ### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
+git clone github.com/Ymit24/t3-clone
 cd t3-clone
 ```
 
@@ -66,80 +71,4 @@ bin/rails server
 bin/rails db:seed
 ```
 
-## Running Tests
-NOTE: Tests are not currently up to date.
-- **All tests:**
-  ```bash
-  bin/rails test
-  ```
-- **With Guard (auto-run on file changes):**
-  ```bash
-  bundle exec guard
-  ```
-- **System/Integration tests:**
-  Place tests in `test/system/` or `test/integration/`.
-- **Component tests:**
-  See `test/components/` and preview with Lookbook.
-
-## Component Previews (Lookbook)
-- Run the Rails server in development and visit [http://localhost:3000/lookbook](http://localhost:3000/lookbook) to browse UI components and previews.
-
-## Deployment
-
-### Kamal 2 (Recommended for Production)
-Kamal 2 is a modern deployment tool for Rails applications, enabling zero-downtime deploys using Docker containers on your own infrastructure.
-
-#### Prerequisites
-- Docker installed on your server(s)
-- SSH access to your deployment target(s)
-- `kamal` gem installed locally (`gem install kamal`)
-- Registry credentials (Docker Hub or other)
-- `RAILS_MASTER_KEY` and any other secrets set up in `.kamal/secrets` or your environment
-
-#### Basic Setup
-1. **Configure Kamal**
-   - Edit `config/deploy.yml` to match your server and registry settings.
-   - Add secrets to `.kamal/secrets` (see Kamal docs for details).
-2. **Build and Push Image**
-   ```bash
-   kamal build
-   kamal push
-   ```
-3. **Deploy**
-   ```bash
-   kamal deploy
-   ```
-4. **Rollback (if needed)**
-   ```bash
-   kamal rollback
-   ```
-
-See [Kamal documentation](https://kamal-deploy.org/docs) for advanced configuration, multi-server setups, and troubleshooting.
-
-### Render.com
-- See `render.yaml` for configuration.
-- Typical setup uses:
-  - `DATABASE_URL` (managed by Render)
-  - `RAILS_MASTER_KEY` (add via Render dashboard)
-- Build and start commands are in `render.yaml`.
-
-### Production Docker
-- Build and run the production image:
-  ```bash
-  docker build -t t3_clone .
-  docker run -d -p 80:80 -e RAILS_MASTER_KEY=your_master_key --name t3_clone t3_clone
-  ```
-- See `Dockerfile` for details.
-
-## Additional Resources
-- [Rails Guides](https://guides.rubyonrails.org/)
-- [Hotwire Docs](https://hotwired.dev/)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
-- [Lookbook Docs](https://lookbook.build/)
-
-## Contributing
-Pull requests and issues are welcome! Please follow Rails conventions and add/maintain tests for new features.
-
----
-
-© T3Clone. MIT License.
+MIT License.
