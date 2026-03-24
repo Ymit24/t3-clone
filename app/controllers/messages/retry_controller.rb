@@ -8,7 +8,6 @@ class Messages::RetryController < ApplicationController
     messages = message.chat.messages.after_message(message)
 
     generation = message.generation
-    puts "generation: #{generation.inspect}"
     Message.transaction do
       message.chat.update!(generating: true)
       generation.update!(completed: false, canceled: false, content: "")
@@ -17,9 +16,6 @@ class Messages::RetryController < ApplicationController
       end
       messages.destroy_all
     end
-    puts "\n\n\n\n\n\n\n\n\nabout to generate retry"
-    puts "generation: #{generation.inspect}"
-    puts "\n\n\n\n\n\n\n\n\n"
     OpenrouterChatCompletionJob.perform_later(generation)
 
     head :ok

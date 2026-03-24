@@ -47,7 +47,7 @@ gem "tailwindcss-rails"
 gem "heroicon"
 gem "view_component"
 gem "redcarpet"
-gem 'rouge'
+gem "rouge"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

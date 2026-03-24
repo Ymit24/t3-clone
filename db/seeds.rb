@@ -31,5 +31,4 @@ LlmModel.create!(name: "OAI GPT-4.1 Nano", provider: "openai", model: "gpt-4.1-n
 LlmModel.create!(name: "OAI GPT-4 Turbo", provider: "openai", model: "gpt-4-turbo", can_search: false, can_reason: false)
 LlmModel.create!(name: "OAI GPT-4", provider: "openai", model: "gpt-4", can_search: false, can_reason: false)
 LlmModel.create!(name: "OAI GPT-3.5 Turbo", provider: "openai", model: "gpt-3.5-turbo", can_search: false, can_reason: false)
-
 end

@@ -20,7 +20,7 @@
 #
 one:
   name: "OpenAI"
-  provider: "openai"
+  provider: "openrouter"
   model: "gpt-4o"
 
 two:

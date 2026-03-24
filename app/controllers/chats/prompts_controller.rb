@@ -5,7 +5,6 @@ class Chats::PromptsController < ApplicationController
     end
 
     def update
-        puts "update-----", prompt_params
         @prompt.update(prompt_params)
         respond_to do |format|
             format.turbo_stream

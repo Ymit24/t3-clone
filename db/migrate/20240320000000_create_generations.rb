@@ -9,4 +9,4 @@ class CreateGenerations < ActiveRecord::Migration[7.1]
       t.timestamps
     end
   end
-end 
+end

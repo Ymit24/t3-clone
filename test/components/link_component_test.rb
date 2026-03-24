@@ -3,10 +3,11 @@
 require "test_helper"
 
 class LinkComponentTest < ViewComponent::TestCase
-  def test_component_renders_something_useful
-    # assert_equal(
-    #   %(<span>Hello, components!</span>),
-    #   render_inline(LinkComponent.new(message: "Hello, components!")).css("span").to_html
-    # )
+  def test_renders_link_with_text_and_href
+    rendered = render_inline(LinkComponent.new(text: "Back", path: "/chats"))
+
+    assert_includes rendered.text, "Back"
+    assert_includes rendered.to_html, 'href="/chats"'
+    assert_includes rendered.to_html, "inline-flex"
   end
 end

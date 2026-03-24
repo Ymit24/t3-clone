@@ -20,6 +20,8 @@
 #
 one:
   body: MyString
+  message: one
 
 two:
   body: MyString
+  message: two

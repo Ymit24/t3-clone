@@ -21,6 +21,6 @@ class ChatsController < ApplicationController
   def destroy
     @chat = Current.user.chats.find(params[:id])
     @chat.destroy
-    redirect_to root_url 
+    redirect_to root_url
   end
 end

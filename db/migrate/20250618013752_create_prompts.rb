@@ -10,7 +10,7 @@ class CreatePrompts < ActiveRecord::Migration[8.0]
       t.timestamps
     end
     Chat.all.each do |chat|
-      unless chat.prompt.present? 
+      unless chat.prompt.present?
         chat.prompt = Prompt.create!(chat: chat, llm_model: LlmModel.first)
       end
     end
