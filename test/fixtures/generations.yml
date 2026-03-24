@@ -24,12 +24,18 @@
 #  llm_model_id  (llm_model_id => llm_models.id)
 #
 
-class Generation < ApplicationRecord
-  belongs_to :chat
-  belongs_to :llm_model
+one:
+  chat: one
+  llm_model: one
+  completed: false
+  canceled: false
+  search_enabled: false
+  reasoning_effort: "none"
 
-  has_many :messages, dependent: :destroy
-
-  validates :chat, presence: true
-  validates :llm_model, presence: true
-end
+two:
+  chat: two
+  llm_model: one
+  completed: false
+  canceled: false
+  search_enabled: false
+  reasoning_effort: "none"

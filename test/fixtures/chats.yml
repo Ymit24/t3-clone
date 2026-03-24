@@ -23,9 +23,7 @@
 one:
   user: one
   title: MyString
-  messages: one
 
 two:
   user: two
   title: MyString
-  messages: two

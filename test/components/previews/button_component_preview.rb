@@ -10,4 +10,4 @@ class ButtonComponentPreview < ViewComponent::Preview
   def secondary
     render ButtonComponent.new(text: "Secondary Button", variant: :secondary)
   end
-end 
+end

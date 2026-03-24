@@ -21,14 +21,12 @@
 #  generation_id  (generation_id => generations.id)
 #
 
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  user: one
-  value: MyString
-  llm_model: one
+  chat: one
+  body: Hello from chat one
+  is_system: false
 
 two:
-  user: two
-  value: MyString
-  llm_model: one
+  chat: two
+  body: Hello from chat two
+  is_system: true

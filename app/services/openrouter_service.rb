@@ -12,14 +12,14 @@ class OpenrouterService
 
     req.body = {
       model: model + (reasoning_effort != "none" ? ":thinking" : ""),
-      plugins: search_enabled ? [{id: "web"}] : [],
+      plugins: search_enabled ? [ { id: "web" } ] : [],
       reasoning: {
-        enabled: reasoning_effort != "none",
+        enabled: reasoning_effort != "none"
       },
       stream: true,
       messages: messages.map do |message|
         { role: message.is_system ? "assistant" : "user", content: message.body }
-      end,
+      end
     }.to_json
 
     begin

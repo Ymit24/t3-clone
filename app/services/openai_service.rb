@@ -14,11 +14,11 @@ class OpenaiService
       model: model,
       stream: true,
       messages: [
-        {role: "system", content: "always wrap code blocks in markdown backticks"},
+        { role: "system", content: "always wrap code blocks in markdown backticks" },
         *messages.map do |message|
           { role: message.is_system ? "assistant" : "user", content: message.body }
-        end,
-      ],
+        end
+      ]
     }
 
     if reasoning_effort != "none"
@@ -56,7 +56,7 @@ class OpenaiService
           end
         end
       end
-      return {body: "",citations: []}
+      return { body: "", citations: [] }
 
       raise "this should never happen"
 
@@ -68,7 +68,7 @@ class OpenaiService
         citations = response_body.dig(:choices, 0, :message).fetch(:annotations, [])
         {
           body: body,
-          citations: citations,
+          citations: citations
         }
       when "401"
         if response_body[:error]&.include?("Invalid API key")
